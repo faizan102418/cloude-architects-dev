@@ -8,152 +8,187 @@
   <title>Muhammad Faizan Sajid | Cloud Architects</title>
 
   <style>
-    :root {
-      --bg: #0b1120;
-      --card: #151e30;
-      --border: #29364d;
-      --text: #f1f5f9;
-      --muted: #a2aec1;
-      --accent: #38bdf8;
-      --accent2: #818cf8;
-    }
+    
+:root {
+  --bg: #fff7fa;
+  --card: #ffffff;
+  --border: #f2dce6;
+  --text: #352338;
+  --muted: #846f80;
+  --accent: #d95b91;
+  --accent2: #f7c6d9;
+}
 
-    * { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-    }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+}
 
-    .container {
-      max-width: 1080px;
-      margin: auto;
-      padding: 28px 22px 70px;
-    }
+.container {
+  max-width: 1080px;
+  margin: auto;
+  padding: 28px 22px 70px;
+}
 
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      padding: 12px 0 35px;
-    }
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 0 35px;
+}
 
-    .brand {
-      font-size: 20px;
-      font-weight: bold;
-      color: var(--accent);
-      text-decoration: none;
-    }
+.brand {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--accent);
+  text-decoration: none;
+}
 
-    .back {
-      color: var(--muted);
-      text-decoration: none;
-    }
+.back {
+  color: var(--muted);
+  text-decoration: none;
+}
 
-    .back:hover, a:hover { color: var(--accent); }
+.back:hover,
+a:hover {
+  color: #ad2d69;
+}
 
-    .hero {
-      padding: 50px 35px;
-      background: linear-gradient(135deg, #172a46, #171b35);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-    }
+.hero {
+  padding: 50px 35px;
+  background: linear-gradient(135deg, #fff0f6, #fce4ef);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
 
-    .eyebrow {
-      color: var(--accent);
-      font-weight: bold;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      font-size: 13px;
-    }
+.eyebrow {
+  color: #ad2d69;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 13px;
+}
 
-    h1 {
-      font-size: clamp(32px, 5vw, 52px);
-      margin: 12px 0;
-      line-height: 1.2;
-    }
+h1 {
+  font-size: clamp(32px, 5vw, 52px);
+  margin: 12px 0;
+  line-height: 1.2;
+}
 
-    h2 { font-size: 24px; margin: 0 0 18px; }
+h2 {
+  font-size: 24px;
+  margin: 0 0 18px;
+}
 
-    h3 { margin: 0 0 8px; }
+h3 {
+  margin: 0 0 8px;
+}
 
-    p { color: var(--muted); }
+p {
+  color: var(--muted);
+}
 
-    .hero p { max-width: 750px; font-size: 17px; }
+.hero p {
+  max-width: 750px;
+  font-size: 17px;
+}
 
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 24px;
-    }
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
 
-    .button {
-      padding: 11px 19px;
-      border-radius: 9px;
-      background: var(--accent);
-      color: #07111f;
-      text-decoration: none;
-      font-weight: bold;
-    }
+.button {
+  padding: 11px 19px;
+  border-radius: 9px;
+  background: var(--accent);
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
 
-    .button.secondary {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
+.button:hover {
+  background: #ad2d69;
+  color: white;
+}
 
-    section { margin-top: 42px; }
+.button.secondary {
+  background: white;
+  color: #ad2d69;
+  border: 1px solid var(--border);
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 18px;
-    }
+section {
+  margin-top: 42px;
+}
 
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 24px;
-    }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
 
-    .card p { margin-bottom: 0; }
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(169, 66, 119, 0.06);
+}
 
-    .tag {
-      display: inline-block;
-      padding: 7px 12px;
-      margin: 5px 5px 5px 0;
-      border-radius: 7px;
-      background: #23314a;
-      color: #dce9f8;
-      font-size: 14px;
-    }
+.card p {
+  margin-bottom: 0;
+}
 
-    .contact a {
-      color: var(--accent);
-      text-decoration: none;
-      overflow-wrap: anywhere;
-    }
+.tag {
+  display: inline-block;
+  padding: 7px 12px;
+  margin: 5px 5px 5px 0;
+  border-radius: 7px;
+  background: #fce7f1;
+  color: #a93470;
+  font-size: 14px;
+}
 
-    footer {
-      margin-top: 55px;
-      padding-top: 22px;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      text-align: center;
-      font-size: 14px;
-    }
+.contact a {
+  color: #ad2d69;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
 
-    @media (max-width: 600px) {
-      .hero { padding: 30px 22px; }
-      .container { padding: 18px 16px 45px; }
-    }
+footer {
+  margin-top: 55px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  text-align: center;
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding: 30px 22px;
+  }
+
+  .container {
+    padding: 18px 16px 45px;
+  }
+}
+
+    
+    
+    
   </style>
 </head>
 
@@ -166,7 +201,7 @@
     </nav>
 
     <header class="hero">
-      <div class="eyebrow">Team Lead &amp; Server Administrator</div>
+      <div class="eyebrow">Team Lead &amp; Jr DevOps Engineer</div>
       <h1>Muhammad Faizan Sajid</h1>
       <p>
         Computer Science graduate passionate about backend engineering,
