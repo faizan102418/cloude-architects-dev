@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Muhammad Faizan Sajid - Team Lead and Server Administrator at Cloude Architects.">
+  <title>Muhammad Faizan Sajid | Cloud Architects</title>
+
+  <style>
+    :root {
+      --bg: #0b1120;
+      --card: #151e30;
+      --border: #29364d;
+      --text: #f1f5f9;
+      --muted: #a2aec1;
+      --accent: #38bdf8;
+      --accent2: #818cf8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: auto;
+      padding: 28px 22px 70px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 12px 0 35px;
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .back {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .back:hover, a:hover { color: var(--accent); }
+
+    .hero {
+      padding: 50px 35px;
+      background: linear-gradient(135deg, #172a46, #171b35);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 5vw, 52px);
+      margin: 12px 0;
+      line-height: 1.2;
+    }
+
+    h2 { font-size: 24px; margin: 0 0 18px; }
+
+    h3 { margin: 0 0 8px; }
+
+    p { color: var(--muted); }
+
+    .hero p { max-width: 750px; font-size: 17px; }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .button {
+      padding: 11px 19px;
+      border-radius: 9px;
+      background: var(--accent);
+      color: #07111f;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .button.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    section { margin-top: 42px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+    }
+
+    .card p { margin-bottom: 0; }
+
+    .tag {
+      display: inline-block;
+      padding: 7px 12px;
+      margin: 5px 5px 5px 0;
+      border-radius: 7px;
+      background: #23314a;
+      color: #dce9f8;
+      font-size: 14px;
+    }
+
+    .contact a {
+      color: var(--accent);
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+
+    footer {
+      margin-top: 55px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 30px 22px; }
+      .container { padding: 18px 16px 45px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <nav>
+      <a class="brand" href="../index.html">☁ Cloude Architects</a>
+      <a class="back" href="../index.html">← Back to Home</a>
+    </nav>
+
+    <header class="hero">
+      <div class="eyebrow">Team Lead &amp; Server Administrator</div>
+      <h1>Muhammad Faizan Sajid</h1>
+      <p>
+        Computer Science graduate passionate about backend engineering,
+        cloud infrastructure, DevOps automation, and artificial intelligence.
+        I enjoy building reliable applications and deploying them using
+        modern development and cloud technologies.
+      </p>
+
+      <div class="buttons">
+        <a class="button" href="https://faizan-sajid.vercel.app/"
+           target="_blank" rel="noopener noreferrer">View Portfolio</a>
+        <a class="button secondary" href="https://github.com/faizan102418"
+           target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="button secondary" href="https://www.linkedin.com/in/faizan102418/"
+           target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <h2>About Me</h2>
+        <div class="card">
+          <p>
+            I am a Computer Science graduate with hands-on experience in
+            Python development, REST APIs, databases, cloud deployment,
+            and AI-powered applications.
+          </p>
+          <p>
+            At Cloude Architects, I serve as Team Lead and Server Administrator.
+            My responsibilities include AWS EC2 infrastructure, Linux user
+            management, SSH security, Nginx configuration, GitHub pull-request
+            reviews, and coordinating automated deployments with the team.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Technical Skills</h2>
+        <div class="card">
+          <h3>Programming &amp; Backend</h3>
+          <span class="tag">Python</span>
+          <span class="tag">FastAPI</span>
+          <span class="tag">Flask</span>
+          <span class="tag">REST APIs</span>
+          <span class="tag">SQL</span>
+
+          <h3 style="margin-top: 22px;">Cloud &amp; DevOps</h3>
+          <span class="tag">AWS EC2</span>
+          <span class="tag">Linux</span>
+          <span class="tag">Nginx</span>
+          <span class="tag">Docker</span>
+          <span class="tag">GitHub Actions</span>
+          <span class="tag">Git &amp; GitHub</span>
+          <span class="tag">SSH</span>
+
+          <h3 style="margin-top: 22px;">AI &amp; Databases</h3>
+          <span class="tag">Machine Learning</span>
+          <span class="tag">RAG</span>
+          <span class="tag">LangChain</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">PostgreSQL</span>
+        </div>
+      </section>
+
+      <section>
+        <h2>Featured Projects</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>University AI Assistant</h3>
+            <p>
+              A retrieval-augmented AI assistant for answering university
+              information queries using Python, language models, and
+              a vector knowledge base.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Hotel Management System</h3>
+            <p>
+              A management application supporting room reservations,
+              guest records, billing, expenses, and operational workflows.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Finance Tracker API</h3>
+            <p>
+              A backend API project focused on financial transaction
+              management, database operations, and RESTful design.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Cloude Architects DevOps</h3>
+            <p>
+              A collaborative deployment project involving AWS EC2,
+              Linux administration, Nginx, GitHub pull requests,
+              CI/CD pipelines, and monitoring automation.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <h2>Contact &amp; Professional Links</h2>
+        <div class="grid contact">
+          <div class="card">
+            <h3>Email</h3>
+            <a href="mailto:m.faizansajid102418@gmail.com">
+              m.faizansajid102418@gmail.com
+            </a>
+          </div>
+
+          <div class="card">
+            <h3>LinkedIn</h3>
+            <a href="https://www.linkedin.com/in/faizan102418/"
+               target="_blank" rel="noopener noreferrer">
+              linkedin.com/in/faizan102418
+            </a>
+          </div>
+
+          <div class="card">
+            <h3>Portfolio</h3>
+            <a href="https://faizan-sajid.vercel.app/"
+               target="_blank" rel="noopener noreferrer">
+              faizan-sajid.vercel.app
+            </a>
+          </div>
+
+          <div class="card">
+            <h3>GitHub</h3>
+            <a href="https://github.com/faizan102418"
+               target="_blank" rel="noopener noreferrer">
+              github.com/faizan102418
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      © 2026 Cloude Architects | Muhammad Faizan Sajid
+    </footer>
+  </div>
+</body>
+</html>
