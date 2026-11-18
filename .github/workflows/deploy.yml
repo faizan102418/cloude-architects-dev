@@ -1,0 +1,97 @@
+X
+name: Website CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "site/**"
+      - "scripts/activate-release.sh"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy Website to EC2
+    runs-on: ubuntu-24.04
+    environment: production
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate website files
+        run: |
+          test -s site/index.html
+          test -s site/style.css
+          bash -n scripts/activate-release.sh
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.EC2_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Upload release
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        run: |
+          set -euo pipefail
+
+          RELEASE="release-${GITHUB_SHA:0:12}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          echo "RELEASE=$RELEASE" >> "$GITHUB_ENV"
+
+          SSH_OPTS="-i $HOME/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o BatchMode=yes"
+
+          ssh $SSH_OPTS "$EC2_USER@$EC2_HOST" \
+            "mkdir -p /var/www/cloudarchitects/releases/$RELEASE"
+
+          rsync -az --delete \
+            -e "ssh $SSH_OPTS" \
+            site/ \
+            "$EC2_USER@$EC2_HOST:/var/www/cloudarchitects/releases/$RELEASE/"
+
+          rsync -az \
+            -e "ssh $SSH_OPTS" \
+            scripts/activate-release.sh \
+            "$EC2_USER@$EC2_HOST:/var/www/cloudarchitects/releases/$RELEASE/activate-release.sh"
+
+      - name: Activate release
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        run: |
+          ssh \
+            -i ~/.ssh/deploy_key \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            -o BatchMode=yes \
+            "$EC2_USER@$EC2_HOST" \
+            "bash /var/www/cloudarchitects/releases/$RELEASE/activate-release.sh '$RELEASE'"
+
+      - name: Verify public website
+        run: |
+          curl --fail --silent --show-error \
+            --retry 3 \
+            --retry-delay 2 \
+            --max-time 15 \
+            http://cloud-architects.duckdns.org/ \
+            -o /dev/null
