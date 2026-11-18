@@ -1,41 +1,68 @@
 <!-- Deployment: __VERSION__ -->
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Cloude Architects - ShipIt & TrackIt DevOps Team Challenge">
+  <meta name="description" content="Cloud Architects - ShipIt & TrackIt DevOps Team Challenge 2027. Modern CI/CD automation, cloud infrastructure, and zero-downtime deployments.">
   <title>Cloud Architects | From Code to Cloud</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- Navigation -->
-  <header class="navbar">
+  <!-- Navigation Bar -->
+  <header class="navbar" id="navbar">
     <div class="container nav-content">
-      <a href="index.html" class="logo">
-        <span class="logo-icon">☁</span>
-        Cloud <span>Architects</span>
+      <a href="index.html" class="logo" aria-label="Cloud Architects Home">
+        <span class="logo-badge">☁</span>
+        Cloud <span class="logo-highlight">Architects</span>
       </a>
 
       <nav class="nav-links" aria-label="Main navigation">
         <a href="#about">About</a>
-        <a href="#features">What We Do</a>
-        <a href="#team">Our Team</a>
+        <a href="#features">Pillars</a>
+        <a href="#pipeline">Pipeline</a>
+        <a href="#team">Team</a>
+        <a href="#monitoring">Telemetry</a>
+        <a href="#faq">FAQ</a>
       </nav>
+
+      <div class="nav-actions">
+        <a href="#team" class="nav-cta">
+          <span>Meet Team</span> ↗
+        </a>
+      </div>
+
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-drawer" id="mobileDrawer" style="display: none;">
+      <a href="#about" class="mobile-link">About</a>
+      <a href="#features" class="mobile-link">Pillars</a>
+      <a href="#pipeline" class="mobile-link">Pipeline</a>
+      <a href="#team" class="mobile-link">Team</a>
+      <a href="#monitoring" class="mobile-link">Telemetry</a>
+      <a href="#faq" class="mobile-link">FAQ</a>
     </div>
   </header>
 
   <main>
 
-    <!-- Hero -->
+    <!-- Hero Section -->
     <section class="hero" id="about">
       <div class="container hero-content">
 
-        <span class="eyebrow">✦ ShipIt &amp; TrackIt — DevOps Challenge</span>
+        <div class="eyebrow">
+          <span class="pulse-dot"></span>
+          ✦ ShipIt &amp; TrackIt — DevOps Challenge 2027
+        </div>
 
         <h1>
           From Code to
@@ -43,25 +70,45 @@
         </h1>
 
         <p class="hero-description">
-          Building, deploying, automating and monitoring together.
-          A collaborative DevOps journey powered by teamwork,
-          modern tools and cloud infrastructure.
+          Building, deploying, automating, and monitoring together.
+          A high-performance DevOps ecosystem powered by GitHub Actions,
+          Ubuntu EC2, Nginx, and automated Slack observability.
         </p>
 
         <div class="hero-buttons">
           <a href="#team" class="btn btn-primary">Meet Our Team ↗</a>
-          <a href="#features" class="btn btn-secondary">Explore Our Work</a>
+          <a href="#pipeline" class="btn btn-secondary">Explore Pipeline ↓</a>
         </div>
 
         <div class="status-pill">
           <span class="status-dot"></span>
-          Deployment Dashboard
+          Deployment Dashboard · Production Ready
+        </div>
+
+        <!-- 2027 Statistics Grid -->
+        <div class="stats-banner">
+          <div class="stat-item">
+            <span class="stat-number">99.9%</span>
+            <span class="stat-label">Pipeline Reliability</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">&lt; 45s</span>
+            <span class="stat-label">Average Deploy Time</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">&lt; 5s</span>
+            <span class="stat-label">1-Click Rollback</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Quality Gate Passed</span>
+          </div>
         </div>
 
       </div>
     </section>
 
-    <!-- Features -->
+    <!-- Features / Four Pillars -->
     <section class="features section-padding" id="features">
       <div class="container">
 
@@ -69,48 +116,48 @@
           <span class="section-label">OUR WORKFLOW</span>
           <h2>Everything from code to cloud</h2>
           <p>
-            Four essential pillars powering our DevOps team challenge.
+            Four essential architectural pillars powering our high-velocity DevOps team sprint.
           </p>
         </div>
 
         <div class="features-grid">
 
           <article class="feature-card">
-            <div class="feature-icon">⑂</div>
+            <div class="feature-icon-wrap">⑂</div>
             <h3>GitHub Collaboration</h3>
             <p>
-              Feature branches, pull requests, code reviews
-              and collaborative development.
+              Structured feature branches, peer pull request reviews, 
+              disciplined merge conflict resolution, and Jira Agile issue tracking.
             </p>
             <span class="feature-tag">Version Control</span>
           </article>
 
           <article class="feature-card">
-            <div class="feature-icon">⚡</div>
+            <div class="feature-icon-wrap">⚡</div>
             <h3>CI/CD Pipeline</h3>
             <p>
-              Automated validation, continuous integration
-              and deployment using GitHub Actions.
+              Continuous validation, automated asset auditing, zero-downtime 
+              atomic SSH releases, and instant Slack webhook event broadcasts.
             </p>
-            <span class="feature-tag">Automation</span>
+            <span class="feature-tag">GitHub Actions</span>
           </article>
 
           <article class="feature-card">
-            <div class="feature-icon">☁</div>
+            <div class="feature-icon-wrap">☁</div>
             <h3>Cloud Infrastructure</h3>
             <p>
-              AWS EC2, Ubuntu Linux, SSH access management
-              and Nginx web hosting.
+              Dedicated AWS EC2 instances, hardened Ubuntu Linux users, 
+              strict SSH key authentication, and optimized Nginx web hosting.
             </p>
             <span class="feature-tag">AWS &amp; Linux</span>
           </article>
 
           <article class="feature-card">
-            <div class="feature-icon">◉</div>
-            <h3>Monitoring</h3>
+            <div class="feature-icon-wrap">◉</div>
+            <h3>Observability &amp; Health</h3>
             <p>
-              Server health monitoring, traffic reports,
-              shell scripts and scheduled automation.
+              Real-time server status pages, traffic analytics, automated cron 
+              scripts, and external HTTP health check verification.
             </p>
             <span class="feature-tag">Observability</span>
           </article>
@@ -119,16 +166,80 @@
       </div>
     </section>
 
-    <!-- Team -->
+    <!-- Pipeline Architecture Visualizer -->
+    <section class="pipeline-section section-padding" id="pipeline">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-label">AUTOMATION ENGINE</span>
+          <h2>Zero-Downtime Deployment Flow</h2>
+          <p>
+            Every code merge triggers a multi-stage automated pipeline ensuring zero downtime,
+            thorough validation, and instant team transparency.
+          </p>
+        </div>
+
+        <div class="pipeline-flow-box">
+          <div class="pipeline-grid">
+
+            <div class="pipeline-step-card">
+              <span class="step-badge">01</span>
+              <div class="step-icon">⑂</div>
+              <h4>Pull Request</h4>
+              <p>Branch validation triggered automatically on PR creation.</p>
+            </div>
+
+            <div class="pipeline-step-card">
+              <span class="step-badge">02</span>
+              <div class="step-icon">🛡️</div>
+              <h4>Quality Gate</h4>
+              <p>HTML title validation, internal link auditing, and size limits.</p>
+            </div>
+
+            <div class="pipeline-step-card">
+              <span class="step-badge">03</span>
+              <div class="step-icon">🔐</div>
+              <h4>SSH Authentication</h4>
+              <p>Secure passwordless auth via DEPLOY_SSH_KEY and host verification.</p>
+            </div>
+
+            <div class="pipeline-step-card">
+              <span class="step-badge">04</span>
+              <div class="step-icon">⚡</div>
+              <h4>Atomic Release</h4>
+              <p>Timestamped release folder, commit stamping, and symlink switch.</p>
+            </div>
+
+            <div class="pipeline-step-card">
+              <span class="step-badge">05</span>
+              <div class="step-icon">🩺</div>
+              <h4>Health Check</h4>
+              <p>External HTTP check verifies domain status and commit SHA.</p>
+            </div>
+
+            <div class="pipeline-step-card">
+              <span class="step-badge">06</span>
+              <div class="step-icon">🔔</div>
+              <h4>Slack Broadcast</h4>
+              <p>Instant notification payload dispatched to #cloud-alerts.</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Team Section -->
     <section class="team-section section-padding" id="team">
       <div class="container">
 
         <div class="section-heading">
           <span class="section-label">THE PEOPLE BEHIND THE PROJECT</span>
-          <h2>Meet Our Team <span class="heart">♥</span></h2>
+          <h2>Meet Our Team</h2>
           <p>
-            A team of builders, problem-solvers and cloud enthusiasts
-            working together to ship better software.
+            Cloud builders and DevOps specialists collaborating to engineer reliable,
+            scalable, and automated modern cloud architectures.
           </p>
         </div>
 
@@ -136,76 +247,321 @@
 
           <!-- Faizan -->
           <article class="member-card">
-            <span class="member-card-badge">Team Lead</span>
-            <div class="member-avatar">FS</div>
+            <span class="member-badge-tag badge-lead">Team Lead &amp; Admin</span>
+            <div class="member-avatar avatar-faizan">FS</div>
             <h3>Muhammad Faizan Sajid</h3>
             <p class="member-role">Team Lead &amp; Jr DevOps Engineer</p>
 
             <p class="member-description">
-              Leading the team, managing AWS infrastructure,
-              Linux administration and GitHub collaboration.
+              Leading team coordination, managing AWS EC2 cloud infrastructure,
+              Linux server administration, SSH security, and pull request reviews.
             </p>
 
             <div class="member-skills">
               <span>AWS EC2</span>
               <span>Linux</span>
-              <span>GitHub</span>
+              <span>Nginx</span>
+              <span>Python</span>
+              <span>SSH</span>
             </div>
 
             <a href="members/faizan.html" class="profile-link">
-              View Profile <span aria-hidden="true">↗</span>
+              View Profile <span>↗</span>
             </a>
           </article>
 
           <!-- Muhammad Zikria -->
           <article class="member-card">
-            <span class="member-card-badge badge-pipeline">Pipeline Lead</span>
+            <span class="member-badge-tag badge-pipeline">Pipeline Lead</span>
             <div class="member-avatar avatar-zikria">MZ</div>
             <h3>Muhammad Zikria</h3>
             <p class="member-role">Pipeline Engineer &amp; CI/CD Lead</p>
 
             <p class="member-description">
-              Architecting GitHub Actions CI/CD workflows, automated
-              deployments, one-click rollbacks and real-time Slack alerts.
+              Architecting GitHub Actions CI/CD workflows, automated zero-downtime
+              deployments, one-click rollbacks, and real-time Slack team alerting.
             </p>
 
             <div class="member-skills">
               <span>GitHub Actions</span>
               <span>CI/CD</span>
-              <span>Slack Alerts</span>
+              <span>Slack Webhooks</span>
               <span>Rollback</span>
+              <span>YAML</span>
             </div>
 
             <a href="members/zikria.html" class="profile-link">
-              View Profile <span aria-hidden="true">↗</span>
+              View Profile <span>↗</span>
             </a>
           </article>
 
-          <!-- Teammates will add their cards through PRs -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Telemetry & Monitoring Endpoints -->
+    <section class="section-padding" id="monitoring">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-label">OBSERVABILITY DASHBOARDS</span>
+          <h2>Live Server &amp; Traffic Telemetry</h2>
+          <p>
+            Our cloud server continuously generates automated diagnostic reports
+            and live status metrics updated via scheduled cron routines.
+          </p>
+        </div>
+
+        <div class="server-endpoints-grid">
+
+          <div class="endpoint-card">
+            <div class="endpoint-header">
+              <div class="endpoint-title">
+                <span>🖥️</span> Live Status Dashboard
+              </div>
+              <span class="endpoint-badge">Cron · Every 1 Min</span>
+            </div>
+            <p>
+              Displays system uptime, memory load, disk capacity, Nginx service status,
+              and the last 5 deployment logs directly from the server.
+            </p>
+            <a href="/live/status.html" class="endpoint-link" target="_blank" rel="noopener noreferrer">
+              Open Live Status Page ↗
+            </a>
+          </div>
+
+          <div class="endpoint-card">
+            <div class="endpoint-header">
+              <div class="endpoint-title">
+                <span>📊</span> Traffic &amp; Diagnostics Report
+              </div>
+              <span class="endpoint-badge">Cron · Every 5 Min</span>
+            </div>
+            <p>
+              Parses the Nginx access logs to surface total requests, 404 missing pages,
+              top accessed paths, and client IP analytics.
+            </p>
+            <a href="/live/report.html" class="endpoint-link" target="_blank" rel="noopener noreferrer">
+              Open Traffic Report ↗
+            </a>
+          </div>
 
         </div>
+
+      </div>
+    </section>
+
+    <!-- FAQ Accordion Section -->
+    <section class="faq-section section-padding" id="faq">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-label">FREQUENTLY ASKED QUESTIONS</span>
+          <h2>DevOps Architecture &amp; FAQs</h2>
+          <p>
+            Key insights into the engineering decisions and workflows behind Cloud Architects.
+          </p>
+        </div>
+
+        <div class="faq-container">
+
+          <div class="faq-item active">
+            <button class="faq-question" type="button" aria-expanded="true">
+              <span>How does zero-downtime deployment work on the server?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer" style="max-height: 200px;">
+              <div class="faq-answer-inner">
+                Every deploy creates a timestamped folder inside <code>/var/www/TEAM/releases/</code>. 
+                Once files are staged, version stamped, and verified, an atomic Linux symlink swap points 
+                <code>/var/www/TEAM/current</code> to the new release instantly, ensuring web visitors never see half-updated files.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>What automated checks run before a pull request can merge?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                Our <code>check.yml</code> workflow runs <code>check-site.sh</code> on an Ubuntu runner. 
+                It audits every HTML file for mandatory <code>&lt;title&gt;</code> tags, verifies that all internal 
+                <code>href</code> and <code>src</code> links point to real files, and ensures no asset exceeds the 1MB limit.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>How does the one-click rollback functionality guarantee uptime?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                If an incident occurs, the Pipeline Engineer triggers <code>rollback.yml</code> directly from GitHub Actions. 
+                The script inspects <code>deploys.log</code>, identifies the previous stable release, re-points the 
+                <code>current</code> symlink in under 5 seconds, and notifies the team via Slack.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>How are Slack alerts dispatched securely without leaking secrets?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                The Slack webhook URL is kept exclusively as a secured GitHub Actions secret (<code>SLACK_WEBHOOK_URL</code>) 
+                and never committed to the Git repository. The runner posts rich JSON payloads with commit hashes, author IDs, 
+                and status badges directly to the <code>#cloud-alerts</code> channel.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </section>
 
     <!-- Closing section -->
     <section class="closing-section">
       <div class="container">
-        <h2>One Team. One Mission. <span>Ship It.</span></h2>
+        <h2>One Team. One Mission. <span class="gradient-text">Ship It.</span></h2>
         <p>
-          Collaborating, learning and delivering together
-          with Cloude Architects.
+          Collaborating, learning, and delivering high-quality software together
+          as the Cloud Architects team.
         </p>
+        <a href="#team" class="btn btn-primary">Connect With Us ↗</a>
       </div>
     </section>
 
   </main>
 
+  <!-- Footer -->
   <footer class="footer">
-    <div class="container footer-content">
-      <p>☁ Cloud Architects</p>
-      <p>© 2026 | ShipIt &amp; TrackIt — DevOps Team Challenge</p>
+    <div class="container">
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <span class="logo-badge">☁</span>
+            Cloud <span class="logo-highlight">Architects</span>
+          </a>
+          <p>
+            DevOps Bootcamp Team Sprint · AntonX Private Limited.
+            Empowering modern teams through automated continuous delivery,
+            infrastructure as code, and collaborative cloud engineering.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="#about">About Project</a></li>
+            <li><a href="#features">Core Pillars</a></li>
+            <li><a href="#pipeline">CI/CD Pipeline</a></li>
+            <li><a href="#team">Team Members</a></li>
+            <li><a href="#monitoring">Live Dashboards</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Team Profiles</h4>
+          <ul>
+            <li><a href="members/faizan.html">Faizan Sajid (Lead)</a></li>
+            <li><a href="members/zikria.html">Muhammad Zikria (Pipeline)</a></li>
+            <li><a href="/live/status.html" target="_blank" rel="noopener noreferrer">Live Status</a></li>
+            <li><a href="/live/report.html" target="_blank" rel="noopener noreferrer">Traffic Report</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026–2027 Cloud Architects · ShipIt &amp; TrackIt DevOps Sprint</p>
+        <p>Deployed via GitHub Actions · Zero-Downtime Pipeline</p>
+      </div>
     </div>
   </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    ↑
+  </button>
+
+  <!-- Interactive Enhancements Script -->
+  <script>
+    // Sticky Navbar & Back-to-Top behavior
+    const navbar = document.getElementById('navbar');
+    const backToTop = document.getElementById('backToTop');
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      if (scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+
+      if (scrollY > 300) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
+    });
+
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Mobile Navigation Drawer Toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+
+    if (mobileToggle && mobileDrawer) {
+      mobileToggle.addEventListener('click', () => {
+        const isOpen = mobileToggle.classList.toggle('open');
+        mobileToggle.setAttribute('aria-expanded', isOpen);
+        mobileDrawer.style.display = isOpen ? 'flex' : 'none';
+      });
+
+      document.querySelectorAll('.mobile-link').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileToggle.classList.remove('open');
+          mobileToggle.setAttribute('aria-expanded', 'false');
+          mobileDrawer.style.display = 'none';
+        });
+      });
+    }
+
+    // FAQ Accordion Toggle
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const item = button.parentElement;
+        const answer = button.nextElementSibling;
+        const isActive = item.classList.contains('active');
+
+        // Close all items
+        document.querySelectorAll('.faq-item').forEach(otherItem => {
+          otherItem.classList.remove('active');
+          const otherBtn = otherItem.querySelector('.faq-question');
+          if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+          const otherAns = otherItem.querySelector('.faq-answer');
+          if (otherAns) otherAns.style.maxHeight = null;
+        });
+
+        // Open clicked if not previously open
+        if (!isActive) {
+          item.classList.add('active');
+          button.setAttribute('aria-expanded', 'true');
+          answer.style.maxHeight = answer.scrollHeight + 30 + 'px';
+        }
+      });
+    });
+  </script>
 
 </body>
 

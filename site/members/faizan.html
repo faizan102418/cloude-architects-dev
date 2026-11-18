@@ -1,351 +1,430 @@
 <!-- Deployment: __VERSION__ -->
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Muhammad Faizan Sajid - Team Lead and Server Administrator at Cloude Architects.">
+  <meta name="description" content="Muhammad Faizan Sajid - Team Lead and Server Administrator at Cloud Architects. AWS EC2, Linux administration, Nginx, and cloud DevOps.">
   <title>Muhammad Faizan Sajid | Cloud Architects</title>
+  <link rel="stylesheet" href="../style.css">
 
   <style>
-    
-:root {
-  --bg: #fff7fa;
-  --card: #ffffff;
-  --border: #f2dce6;
-  --text: #352338;
-  --muted: #846f80;
-  --accent: #d95b91;
-  --accent2: #f7c6d9;
-}
+    /* Member-specific 2027 Light UI Enhancements */
+    .member-hero {
+      padding: 70px 0 50px;
+    }
 
-* {
-  box-sizing: border-box;
-}
+    .member-hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 36px;
+      align-items: center;
+    }
 
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.7;
-}
+    .about-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-sm);
+    }
 
-.container {
-  max-width: 1080px;
-  margin: auto;
-  padding: 28px 22px 70px;
-}
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
 
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 12px 0 35px;
-}
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+      transition: all var(--duration-normal) var(--ease-smooth);
+      display: flex;
+      flex-direction: column;
+    }
 
-.brand {
-  font-size: 20px;
-  font-weight: bold;
-  color: var(--accent);
-  text-decoration: none;
-}
+    .project-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(139, 120, 230, 0.4);
+      box-shadow: var(--shadow-hover);
+    }
 
-.back {
-  color: var(--muted);
-  text-decoration: none;
-}
+    .project-card h3 {
+      font-family: var(--font-heading);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
 
-.back:hover,
-a:hover {
-  color: #ad2d69;
-}
+    .project-card p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.65;
+      flex-grow: 1;
+    }
 
-.hero {
-  padding: 50px 35px;
-  background: linear-gradient(135deg, #fff0f6, #fce4ef);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-}
+    .skills-category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
 
-.eyebrow {
-  color: #ad2d69;
-  font-weight: bold;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  font-size: 13px;
-}
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      box-shadow: var(--shadow-sm);
+    }
 
-h1 {
-  font-size: clamp(32px, 5vw, 52px);
-  margin: 12px 0;
-  line-height: 1.2;
-}
+    .skill-card h3 {
+      font-family: var(--font-heading);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-h2 {
-  font-size: 24px;
-  margin: 0 0 18px;
-}
+    .skill-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
 
-h3 {
-  margin: 0 0 8px;
-}
+    .skill-pill {
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      font-weight: 600;
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      transition: all var(--duration-fast) ease;
+    }
 
-p {
-  color: var(--muted);
-}
+    .skill-pill:hover {
+      background: var(--secondary-light);
+      border-color: var(--secondary);
+      color: var(--secondary);
+    }
 
-.hero p {
-  max-width: 750px;
-  font-size: 17px;
-}
+    .contact-card-box {
+      background: linear-gradient(135deg, rgba(139, 120, 230, 0.08) 0%, rgba(91, 124, 250, 0.08) 100%);
+      border: 1px solid rgba(139, 120, 230, 0.25);
+      border-radius: var(--radius-xl);
+      padding: 50px 32px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
 
-.buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 24px;
-}
+    .contact-pills-wrap {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 28px;
+    }
 
-.button {
-  padding: 11px 19px;
-  border-radius: 9px;
-  background: var(--accent);
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
+    .contact-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 14px;
+      box-shadow: var(--shadow-xs);
+      transition: all var(--duration-fast) ease;
+    }
 
-.button:hover {
-  background: #ad2d69;
-  color: white;
-}
+    .contact-pill:hover {
+      border-color: var(--secondary);
+      color: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
 
-.button.secondary {
-  background: white;
-  color: #ad2d69;
-  border: 1px solid var(--border);
-}
-
-section {
-  margin-top: 42px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 18px;
-}
-
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 24px;
-  box-shadow: 0 10px 30px rgba(169, 66, 119, 0.06);
-}
-
-.card p {
-  margin-bottom: 0;
-}
-
-.tag {
-  display: inline-block;
-  padding: 7px 12px;
-  margin: 5px 5px 5px 0;
-  border-radius: 7px;
-  background: #fce7f1;
-  color: #a93470;
-  font-size: 14px;
-}
-
-.contact a {
-  color: #ad2d69;
-  text-decoration: none;
-  overflow-wrap: anywhere;
-}
-
-footer {
-  margin-top: 55px;
-  padding-top: 22px;
-  border-top: 1px solid var(--border);
-  color: var(--muted);
-  text-align: center;
-  font-size: 14px;
-}
-
-@media (max-width: 600px) {
-  .hero {
-    padding: 30px 22px;
-  }
-
-  .container {
-    padding: 18px 16px 45px;
-  }
-}
-
-    
-    
-    
+    @media (max-width: 900px) {
+      .member-hero-grid {
+        grid-template-columns: 1fr;
+      }
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <div class="container">
 
-    <nav>
-      <a class="brand" href="../index.html">☁ Cloude Architects</a>
-      <a class="back" href="../index.html">← Back to Home</a>
-    </nav>
+  <!-- Navigation Bar -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-content">
+      <a href="../index.html" class="logo">
+        <span class="logo-badge">☁</span>
+        Cloud <span class="logo-highlight">Architects</span>
+      </a>
 
-    <header class="hero">
-      <div class="eyebrow">Team Lead &amp; Jr DevOps Engineer</div>
-      <h1>Muhammad Faizan Sajid</h1>
-      <p>
-        Computer Science graduate passionate about backend engineering,
-        cloud infrastructure, DevOps automation, and artificial intelligence.
-        I enjoy building reliable applications and deploying them using
-        modern development and cloud technologies.
-      </p>
+      <nav class="nav-links" aria-label="Member navigation">
+        <a href="../index.html">← Back to Home</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
 
-      <div class="buttons">
-        <a class="button" href="https://faizan-sajid.vercel.app/"
-           target="_blank" rel="noopener noreferrer">View Portfolio</a>
-        <a class="button secondary" href="https://github.com/faizan102418"
-           target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a class="button secondary" href="https://www.linkedin.com/in/faizan102418/"
-           target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <div class="nav-actions">
+        <a href="../index.html#team" class="nav-cta">
+          <span>All Members</span> ↗
+        </a>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <main>
-      <section>
-        <h2>About Me</h2>
-        <div class="card">
-          <p>
-            I am a Computer Science graduate with hands-on experience in
-            Python development, REST APIs, databases, cloud deployment,
-            and AI-powered applications.
+  <main>
+
+    <!-- Member Hero Section -->
+    <section class="member-hero">
+      <div class="container member-hero-grid">
+
+        <div class="member-hero-info">
+          <div class="eyebrow" style="background: var(--secondary-light); color: var(--secondary); border-color: rgba(139, 120, 230, 0.25);">
+            <span class="pulse-dot" style="background: var(--secondary);"></span>
+            Team Lead &amp; Server Administrator
+          </div>
+
+          <h1>
+            Muhammad Faizan <span class="gradient-text">Sajid</span>
+          </h1>
+
+          <div style="font-size: 18px; font-weight: 700; color: var(--secondary); margin-bottom: 16px;">
+            Jr DevOps Engineer &amp; Backend Specialist · Cloud Architects
+          </div>
+
+          <p class="hero-description" style="margin-inline: 0; text-align: left;">
+            Computer Science graduate passionate about backend engineering, cloud infrastructure,
+            DevOps automation, and artificial intelligence. Leading team coordination, server
+            administration, and AWS EC2 deployments for Cloud Architects.
           </p>
+
+          <div class="hero-buttons" style="justify-content: flex-start; margin-bottom: 0;">
+            <a href="https://faizan-sajid.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              <span>🌐</span> View Portfolio
+            </a>
+            <a href="https://github.com/faizan102418" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+              <span>⑂</span> GitHub Profile
+            </a>
+            <a href="https://www.linkedin.com/in/faizan102418/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+              <span>💼</span> LinkedIn
+            </a>
+          </div>
+        </div>
+
+        <!-- Server Admin Card -->
+        <aside class="about-card" style="border-top: 4px solid var(--secondary);">
+          <div style="font-family: var(--font-heading); font-size: 17px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+            <span>☁️</span> Infrastructure Lead
+          </div>
+          <p style="color: var(--text-muted); font-size: 14.5px; line-height: 1.7; margin-bottom: 16px;">
+            Responsible for provisioning Ubuntu EC2 cloud servers, managing user groups,
+            securing SSH key pairs for team access and CI/CD runners, configuring Nginx virtual hosts,
+            and keeping our Jira Kanban board on schedule.
+          </p>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+            <span class="skill-pill">AWS EC2</span>
+            <span class="skill-pill">Ubuntu 24.04</span>
+            <span class="skill-pill">Nginx</span>
+            <span class="skill-pill">SSH Security</span>
+            <span class="skill-pill">Jira Kanban</span>
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- About Me Section -->
+    <section class="section-padding" id="about" style="background: var(--surface);">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-label">BACKGROUND &amp; ROLE</span>
+          <h2>About Faizan Sajid</h2>
           <p>
-            At Cloude Architects, I serve as Team Lead and Server Administrator.
-            My responsibilities include AWS EC2 infrastructure, Linux user
-            management, SSH security, Nginx configuration, GitHub pull-request
-            reviews, and coordinating automated deployments with the team.
+            Combining software development and cloud operations to build resilient architectures.
           </p>
         </div>
-      </section>
 
-      <section>
-        <h2>Technical Skills</h2>
-        <div class="card">
-          <h3>Programming &amp; Backend</h3>
-          <span class="tag">Python</span>
-          <span class="tag">FastAPI</span>
-          <span class="tag">Flask</span>
-          <span class="tag">REST APIs</span>
-          <span class="tag">SQL</span>
-
-          <h3 style="margin-top: 22px;">Cloud &amp; DevOps</h3>
-          <span class="tag">AWS EC2</span>
-          <span class="tag">Linux</span>
-          <span class="tag">Nginx</span>
-          <span class="tag">Docker</span>
-          <span class="tag">GitHub Actions</span>
-          <span class="tag">Git &amp; GitHub</span>
-          <span class="tag">SSH</span>
-
-          <h3 style="margin-top: 22px;">AI &amp; Databases</h3>
-          <span class="tag">Machine Learning</span>
-          <span class="tag">RAG</span>
-          <span class="tag">LangChain</span>
-          <span class="tag">MySQL</span>
-          <span class="tag">PostgreSQL</span>
+        <div class="about-card" style="max-width: 860px; margin: 0 auto;">
+          <p style="color: var(--text-muted); font-size: 15.5px; line-height: 1.8; margin-bottom: 16px;">
+            I am a Computer Science graduate with hands-on experience in Python development,
+            RESTful API architectures, database management, cloud deployment, and AI-powered applications.
+          </p>
+          <p style="color: var(--text-muted); font-size: 15.5px; line-height: 1.8;">
+            At Cloud Architects, I serve as Team Lead and Server Administrator. My core responsibilities
+            include setting up the Ubuntu cloud server, configuring deploy user permissions, establishing
+            secure SSH communication for GitHub Actions, reviewing pull requests, and ensuring seamless
+            collaboration across our DevOps team.
+          </p>
         </div>
-      </section>
 
-      <section>
-        <h2>Featured Projects</h2>
-        <div class="grid">
-          <article class="card">
+      </div>
+    </section>
+
+    <!-- Technical Skills Section -->
+    <section class="section-padding" id="skills">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-label">TECHNICAL EXPERTISE</span>
+          <h2>Skills &amp; Technologies</h2>
+          <p>
+            Proficiencies across backend development, cloud infrastructure, and modern data platforms.
+          </p>
+        </div>
+
+        <div class="skills-category-grid">
+
+          <div class="skill-card">
+            <h3><span>🐍</span> Backend &amp; APIs</h3>
+            <div class="skill-pills">
+              <span class="skill-pill">Python</span>
+              <span class="skill-pill">FastAPI</span>
+              <span class="skill-pill">Flask</span>
+              <span class="skill-pill">REST APIs</span>
+              <span class="skill-pill">SQL</span>
+            </div>
+          </div>
+
+          <div class="skill-card">
+            <h3><span>☁️</span> Cloud &amp; DevOps</h3>
+            <div class="skill-pills">
+              <span class="skill-pill">AWS EC2</span>
+              <span class="skill-pill">Linux Ubuntu</span>
+              <span class="skill-pill">Nginx</span>
+              <span class="skill-pill">Docker</span>
+              <span class="skill-pill">GitHub Actions</span>
+              <span class="skill-pill">SSH Keys</span>
+            </div>
+          </div>
+
+          <div class="skill-card">
+            <h3><span>🤖</span> AI &amp; Databases</h3>
+            <div class="skill-pills">
+              <span class="skill-pill">Machine Learning</span>
+              <span class="skill-pill">RAG</span>
+              <span class="skill-pill">LangChain</span>
+              <span class="skill-pill">PostgreSQL</span>
+              <span class="skill-pill">MySQL</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Featured Projects Section -->
+    <section class="section-padding" id="projects" style="background: var(--surface);">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-label">PORTFOLIO WORK</span>
+          <h2>Featured Projects</h2>
+          <p>
+            A selection of software development and DevOps initiatives engineered by Faizan.
+          </p>
+        </div>
+
+        <div class="projects-grid">
+
+          <article class="project-card">
             <h3>University AI Assistant</h3>
             <p>
-              A retrieval-augmented AI assistant for answering university
-              information queries using Python, language models, and
-              a vector knowledge base.
+              A retrieval-augmented generation (RAG) assistant designed for querying university
+              academic and administrative information using Python, vector databases, and LLM integrations.
             </p>
           </article>
 
-          <article class="card">
+          <article class="project-card">
             <h3>Hotel Management System</h3>
             <p>
-              A management application supporting room reservations,
-              guest records, billing, expenses, and operational workflows.
+              An enterprise management platform supporting room reservations, guest lifecycle records,
+              billing systems, expense analytics, and staff operational workflows.
             </p>
           </article>
 
-          <article class="card">
+          <article class="project-card">
             <h3>Finance Tracker API</h3>
             <p>
-              A backend API project focused on financial transaction
-              management, database operations, and RESTful design.
+              A scalable backend REST API service built for personal financial ledger management,
+              budgeting categories, transaction reconciliation, and data security.
             </p>
           </article>
 
-          <article class="card">
-            <h3>Cloude Architects DevOps</h3>
+          <article class="project-card">
+            <h3>Cloud Architects DevOps</h3>
             <p>
-              A collaborative deployment project involving AWS EC2,
-              Linux administration, Nginx, GitHub pull requests,
-              CI/CD pipelines, and monitoring automation.
+              Collaborative cloud delivery sprint featuring AWS EC2 server setup, Nginx reverse proxying,
+              CI/CD GitHub Actions integration, and real-time observability telemetry.
             </p>
           </article>
+
         </div>
-      </section>
 
-      <section>
-        <h2>Contact &amp; Professional Links</h2>
-        <div class="grid contact">
-          <div class="card">
-            <h3>Email</h3>
-            <a href="mailto:m.faizansajid102418@gmail.com">
-              m.faizansajid102418@gmail.com
+      </div>
+    </section>
+
+    <!-- Contact & Connect -->
+    <section class="section-padding" id="contact">
+      <div class="container">
+        <div class="contact-card-box">
+          <span class="section-label">GET IN TOUCH</span>
+          <h2>Let's Connect &amp; Collaborate</h2>
+          <p style="color: var(--text-muted); max-width: 580px; margin: 12px auto 0;">
+            Reach out for backend software development, cloud infrastructure management, or team engineering initiatives.
+          </p>
+
+          <div class="contact-pills-wrap">
+            <a href="mailto:m.faizansajid102418@gmail.com" class="contact-pill">
+              <span>✉️</span> m.faizansajid102418@gmail.com
             </a>
-          </div>
-
-          <div class="card">
-            <h3>LinkedIn</h3>
-            <a href="https://www.linkedin.com/in/faizan102418/"
-               target="_blank" rel="noopener noreferrer">
-              linkedin.com/in/faizan102418
+            <a href="https://faizan-sajid.vercel.app/" target="_blank" rel="noopener noreferrer" class="contact-pill">
+              <span>🌐</span> faizan-sajid.vercel.app
             </a>
-          </div>
-
-          <div class="card">
-            <h3>Portfolio</h3>
-            <a href="https://faizan-sajid.vercel.app/"
-               target="_blank" rel="noopener noreferrer">
-              faizan-sajid.vercel.app
+            <a href="https://github.com/faizan102418" target="_blank" rel="noopener noreferrer" class="contact-pill">
+              <span>⑂</span> github.com/faizan102418
             </a>
-          </div>
-
-          <div class="card">
-            <h3>GitHub</h3>
-            <a href="https://github.com/faizan102418"
-               target="_blank" rel="noopener noreferrer">
-              github.com/faizan102418
+            <a href="https://www.linkedin.com/in/faizan102418/" target="_blank" rel="noopener noreferrer" class="contact-pill">
+              <span>💼</span> linkedin.com/in/faizan102418
             </a>
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
 
-    <footer>
-      © 2026 Cloude Architects | Muhammad Faizan Sajid
-    </footer>
-  </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <p>© 2026–2027 Cloud Architects · Muhammad Faizan Sajid</p>
+        <p><a href="../index.html" style="color: var(--text-muted);">← Back to Team Homepage</a></p>
+      </div>
+    </div>
+  </footer>
+
 </body>
+
 </html>
