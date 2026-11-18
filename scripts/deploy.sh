@@ -128,6 +128,38 @@ for old in "${OLD_RELEASES[@]}"; do
   rm -rf -- "$OLD_PATH"
 done
 
+
+# A13: Automatically install monitoring scripts.
+echo "Installing monitoring scripts..."
+
+BIN="$BASE/bin"
+mkdir -p "$BIN" "$BASE/live"
+
+install -m 755 "$UPLOAD/scripts/status.sh" "$BIN/status.sh"
+install -m 755 "$UPLOAD/scripts/traffic-report.sh" "$BIN/traffic-report.sh"
+
+# Configure cron without duplicating existing monitoring jobs.
+CRON_FILE=$(mktemp)
+trap 'rm -f "$NEXT_LINK" "$CRON_FILE"' EXIT
+
+crontab -l 2>/dev/null |
+  grep -v -E '/var/www/cloudarchitects/bin/(status|traffic-report)\.sh' \
+  > "$CRON_FILE" || true
+
+cat >> "$CRON_FILE" <<'CRON'
+* * * * * /usr/bin/bash /var/www/cloudarchitects/bin/status.sh >> /var/www/cloudarchitects/status-cron.log 2>&1
+*/5 * * * * /usr/bin/bash /var/www/cloudarchitects/bin/traffic-report.sh >> /var/www/cloudarchitects/traffic-cron.log 2>&1
+CRON
+
+crontab "$CRON_FILE"
+
+# Generate both monitoring pages immediately.
+/usr/bin/bash "$BIN/status.sh"
+/usr/bin/bash "$BIN/traffic-report.sh"
+
+echo "Monitoring installation completed"
+
+
 echo "Deployment successful"
 echo "Release: $RELEASE"
 echo "Commit: $COMMIT"
