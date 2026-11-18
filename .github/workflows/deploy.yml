@@ -1,14 +1,9 @@
-X
+
 name: Website CD
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - "site/**"
-      - "scripts/activate-release.sh"
-      - ".github/workflows/deploy.yml"
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -21,7 +16,7 @@ concurrency:
 jobs:
   deploy:
     name: Deploy Website to EC2
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     environment: production
     timeout-minutes: 10
 
@@ -29,11 +24,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Validate website files
+      - name: Validate website
         run: |
-          test -s site/index.html
-          test -s site/style.css
-          bash -n scripts/activate-release.sh
+          bash scripts/check-site.sh site
+          bash -n scripts/deploy.sh
 
       - name: Configure SSH
         env:
@@ -42,56 +36,77 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-
           printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-
           printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
 
-      - name: Upload release
+      - name: Upload website and scripts
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USER: ${{ secrets.EC2_USER }}
         run: |
           set -euo pipefail
 
-          RELEASE="release-${GITHUB_SHA:0:12}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
-          echo "RELEASE=$RELEASE" >> "$GITHUB_ENV"
+          SSH="ssh -i $HOME/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o BatchMode=yes"
+          REMOTE="$EC2_USER@$EC2_HOST"
+          BASE="/var/www/cloudarchitects/upload"
 
-          SSH_OPTS="-i $HOME/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o BatchMode=yes"
+          $SSH "$REMOTE" "mkdir -p '$BASE/site' '$BASE/scripts'"
 
-          ssh $SSH_OPTS "$EC2_USER@$EC2_HOST" \
-            "mkdir -p /var/www/cloudarchitects/releases/$RELEASE"
-
-          rsync -az --delete \
-            -e "ssh $SSH_OPTS" \
-            site/ \
-            "$EC2_USER@$EC2_HOST:/var/www/cloudarchitects/releases/$RELEASE/"
-
-          rsync -az \
-            -e "ssh $SSH_OPTS" \
-            scripts/activate-release.sh \
-            "$EC2_USER@$EC2_HOST:/var/www/cloudarchitects/releases/$RELEASE/activate-release.sh"
+          rsync -az --delete -e "$SSH" site/ "$REMOTE:$BASE/site/"
+          rsync -az --delete -e "$SSH" scripts/ "$REMOTE:$BASE/scripts/"
 
       - name: Activate release
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USER: ${{ secrets.EC2_USER }}
         run: |
-          ssh \
-            -i ~/.ssh/deploy_key \
+          ssh -i ~/.ssh/deploy_key \
             -o IdentitiesOnly=yes \
             -o StrictHostKeyChecking=yes \
             -o BatchMode=yes \
             "$EC2_USER@$EC2_HOST" \
-            "bash /var/www/cloudarchitects/releases/$RELEASE/activate-release.sh '$RELEASE'"
+            "bash /var/www/cloudarchitects/upload/scripts/deploy.sh '$GITHUB_SHA' '$GITHUB_ACTOR'"
 
-      - name: Verify public website
+      - name: Verify deployed commit
         run: |
+          set -euo pipefail
           curl --fail --silent --show-error \
-            --retry 3 \
-            --retry-delay 2 \
+            --retry 3 --retry-delay 2 \
             --max-time 15 \
             http://cloud-architects.duckdns.org/ \
-            -o /dev/null
+            | grep -F "$GITHUB_SHA"
+
+      - name: Notify Slack
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          RESULT: ${{ job.status }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          result = os.environ["RESULT"]
+          commit = os.environ["GITHUB_SHA"]
+          actor = os.environ["GITHUB_ACTOR"]
+          repo = os.environ["GITHUB_REPOSITORY"]
+          run_id = os.environ["GITHUB_RUN_ID"]
+
+          message = (
+              f"Website deployment: {result}\n"
+              f"Commit: {commit}\n"
+              f"Actor: {actor}\n"
+              f"Run: https://github.com/{repo}/actions/runs/{run_id}"
+          )
+
+          data = json.dumps({"text": message}).encode()
+          request = urllib.request.Request(
+              os.environ["SLACK_WEBHOOK_URL"],
+              data=data,
+              headers={"Content-Type": "application/json"},
+          )
+          urllib.request.urlopen(request, timeout=15).close()
+          PY
