@@ -1,0 +1,75 @@
+
+name: Website Rollback
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-production-deploy
+  cancel-in-progress: false
+
+jobs:
+  rollback:
+    name: Roll Back Website
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 10
+
+    steps:
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.EC2_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Roll back website
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        run: |
+          ssh -i ~/.ssh/deploy_key \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            -o BatchMode=yes \
+            "$EC2_USER@$EC2_HOST" \
+            "bash /var/www/cloudarchitects/upload/scripts/rollback.sh '$GITHUB_ACTOR'"
+
+      - name: Notify Slack
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          RESULT: ${{ job.status }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          result = os.environ["RESULT"]
+          actor = os.environ["GITHUB_ACTOR"]
+          repo = os.environ["GITHUB_REPOSITORY"]
+          run_id = os.environ["GITHUB_RUN_ID"]
+
+          message = (
+              f"Website rollback: {result}\n"
+              f"Triggered by: {actor}\n"
+              f"Run: https://github.com/{repo}/actions/runs/{run_id}"
+          )
+
+          data = json.dumps({"text": message}).encode()
+          request = urllib.request.Request(
+              os.environ["SLACK_WEBHOOK_URL"],
+              data=data,
+              headers={"Content-Type": "application/json"},
+          )
+          urllib.request.urlopen(request, timeout=15).close()
+          PY
