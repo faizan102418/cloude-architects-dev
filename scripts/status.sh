@@ -42,7 +42,7 @@ cat > "$OUTPUT" <<EOF
   </style>
 </head>
 <body>
-  <h1>Cloude Architects - Server Status</h1>
+  <h1>Cloude Architects - Live Server Status</h1>
   <p><strong>Hostname:</strong> $HOSTNAME</p>
   <p><strong>Updated:</strong> $TIME</p>
   <p><strong>Uptime:</strong> $UPTIME</p>
