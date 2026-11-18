@@ -5,7 +5,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Cloud Architects - ShipIt & TrackIt DevOps Team Challenge 2027. Modern CI/CD automation, cloud infrastructure, and zero-downtime deployments.">
+  <meta name="description"
+    content="Cloud Architects - ShipIt & TrackIt DevOps Team Challenge 2027. Modern CI/CD automation, cloud infrastructure, and zero-downtime deployments.">
   <title>Cloud Architects | From Code to Cloud</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -126,7 +127,7 @@
             <div class="feature-icon-wrap">⑂</div>
             <h3>GitHub Collaboration</h3>
             <p>
-              Structured feature branches, peer pull request reviews, 
+              Structured feature branches, peer pull request reviews,
               disciplined merge conflict resolution, and Jira Agile issue tracking.
             </p>
             <span class="feature-tag">Version Control</span>
@@ -136,7 +137,7 @@
             <div class="feature-icon-wrap">⚡</div>
             <h3>CI/CD Pipeline</h3>
             <p>
-              Continuous validation, automated asset auditing, zero-downtime 
+              Continuous validation, automated asset auditing, zero-downtime
               atomic SSH releases, and instant Slack webhook event broadcasts.
             </p>
             <span class="feature-tag">GitHub Actions</span>
@@ -146,7 +147,7 @@
             <div class="feature-icon-wrap">☁</div>
             <h3>Cloud Infrastructure</h3>
             <p>
-              Dedicated AWS EC2 instances, hardened Ubuntu Linux users, 
+              Dedicated AWS EC2 instances, hardened Ubuntu Linux users,
               strict SSH key authentication, and optimized Nginx web hosting.
             </p>
             <span class="feature-tag">AWS &amp; Linux</span>
@@ -156,7 +157,7 @@
             <div class="feature-icon-wrap">◉</div>
             <h3>Observability &amp; Health</h3>
             <p>
-              Real-time server status pages, traffic analytics, automated cron 
+              Real-time server status pages, traffic analytics, automated cron
               scripts, and external HTTP health check verification.
             </p>
             <span class="feature-tag">Observability</span>
@@ -325,7 +326,7 @@
               Displays system uptime, memory load, disk capacity, Nginx service status,
               and the last 5 deployment logs directly from the server.
             </p>
-            <a href="/live/status.html" class="endpoint-link" target="_blank" rel="noopener noreferrer">
+            <a href="live/status.html" class="endpoint-link" target="_blank" rel="noopener noreferrer">
               Open Live Status Page ↗
             </a>
           </div>
@@ -341,7 +342,7 @@
               Parses the Nginx access logs to surface total requests, 404 missing pages,
               top accessed paths, and client IP analytics.
             </p>
-            <a href="/live/report.html" class="endpoint-link" target="_blank" rel="noopener noreferrer">
+            <a href="live/report.html" class="endpoint-link" target="_blank" rel="noopener noreferrer">
               Open Traffic Report ↗
             </a>
           </div>
@@ -372,9 +373,10 @@
             </button>
             <div class="faq-answer" style="max-height: 200px;">
               <div class="faq-answer-inner">
-                Every deploy creates a timestamped folder inside <code>/var/www/TEAM/releases/</code>. 
-                Once files are staged, version stamped, and verified, an atomic Linux symlink swap points 
-                <code>/var/www/TEAM/current</code> to the new release instantly, ensuring web visitors never see half-updated files.
+                Every deploy creates a timestamped folder inside <code>/var/www/TEAM/releases/</code>.
+                Once files are staged, version stamped, and verified, an atomic Linux symlink swap points
+                <code>/var/www/TEAM/current</code> to the new release instantly, ensuring web visitors never see
+                half-updated files.
               </div>
             </div>
           </div>
@@ -386,9 +388,10 @@
             </button>
             <div class="faq-answer">
               <div class="faq-answer-inner">
-                Our <code>check.yml</code> workflow runs <code>check-site.sh</code> on an Ubuntu runner. 
-                It audits every HTML file for mandatory <code>&lt;title&gt;</code> tags, verifies that all internal 
-                <code>href</code> and <code>src</code> links point to real files, and ensures no asset exceeds the 1MB limit.
+                Our <code>check.yml</code> workflow runs <code>check-site.sh</code> on an Ubuntu runner.
+                It audits every HTML file for mandatory <code>&lt;title&gt;</code> tags, verifies that all internal
+                <code>href</code> and <code>src</code> links point to real files, and ensures no asset exceeds the 1MB
+                limit.
               </div>
             </div>
           </div>
@@ -400,8 +403,9 @@
             </button>
             <div class="faq-answer">
               <div class="faq-answer-inner">
-                If an incident occurs, the Pipeline Engineer triggers <code>rollback.yml</code> directly from GitHub Actions. 
-                The script inspects <code>deploys.log</code>, identifies the previous stable release, re-points the 
+                If an incident occurs, the Pipeline Engineer triggers <code>rollback.yml</code> directly from GitHub
+                Actions.
+                The script inspects <code>deploys.log</code>, identifies the previous stable release, re-points the
                 <code>current</code> symlink in under 5 seconds, and notifies the team via Slack.
               </div>
             </div>
@@ -414,8 +418,10 @@
             </button>
             <div class="faq-answer">
               <div class="faq-answer-inner">
-                The Slack webhook URL is kept exclusively as a secured GitHub Actions secret (<code>SLACK_WEBHOOK_URL</code>) 
-                and never committed to the Git repository. The runner posts rich JSON payloads with commit hashes, author IDs, 
+                The Slack webhook URL is kept exclusively as a secured GitHub Actions secret
+                (<code>SLACK_WEBHOOK_URL</code>)
+                and never committed to the Git repository. The runner posts rich JSON payloads with commit hashes,
+                author IDs,
                 and status badges directly to the <code>#cloud-alerts</code> channel.
               </div>
             </div>
@@ -473,8 +479,8 @@
           <ul>
             <li><a href="members/faizan.html">Faizan Sajid (Lead)</a></li>
             <li><a href="members/zikria.html">Muhammad Zikria (Pipeline)</a></li>
-            <li><a href="/live/status.html" target="_blank" rel="noopener noreferrer">Live Status</a></li>
-            <li><a href="/live/report.html" target="_blank" rel="noopener noreferrer">Traffic Report</a></li>
+            <li><a href="live/status.html" target="_blank" rel="noopener noreferrer">Live Status</a></li>
+            <li><a href="live/report.html" target="_blank" rel="noopener noreferrer">Traffic Report</a></li>
           </ul>
         </div>
 
