@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Muhammad Jan Zikria - Pipeline Engineer at Cloud Architects. Lead for GitHub Actions CI/CD workflows, automated zero-downtime deployments, and real-time Slack alerts.">
+  <title>Muhammad Zikria | Pipeline Engineer - Cloud Architects</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0d0f17;
+      --bg-surface: #141724;
+      --bg-surface-elevated: #1b2032;
+      --bg-surface-card: rgba(22, 27, 42, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(217, 70, 139, 0.25);
+      --border-highlight: rgba(99, 102, 241, 0.35);
+
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --primary: #d9468b;
+      --primary-glow: rgba(217, 70, 139, 0.35);
+      --indigo: #6366f1;
+      --indigo-glow: rgba(99, 102, 241, 0.3);
+      --emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.25);
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --slack-green: #2eb886;
+      --slack-purple: #4a154b;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.45);
+      --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.6);
+      --shadow-glow: 0 0 30px rgba(217, 70, 139, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 25%, rgba(217, 70, 139, 0.14) 0%, transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 50%),
+        linear-gradient(180deg, #090b11 0%, #0d0f17 100%);
+      background-attachment: fixed;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.7;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header & Navigation */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 15, 23, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+    }
+
+    .nav-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--indigo));
+      color: white;
+      font-size: 16px;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .brand-link span {
+      color: var(--primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn-back {
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .nav-btn-back:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateX(-2px);
+    }
+
+    .nav-btn-highlight {
+      background: linear-gradient(135deg, var(--primary), #a855b8);
+      color: white;
+      box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    .nav-btn-highlight:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--primary-glow);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 70px 0 50px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(217, 70, 139, 0.12);
+      border: 1px solid rgba(217, 70, 139, 0.28);
+      color: #f472b6;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-bottom: 20px;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #f472b6;
+      box-shadow: 0 0 10px #f472b6;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        opacity: 0.8;
+        box-shadow: 0 0 0 0 rgba(244, 114, 182, 0.7);
+      }
+
+      70% {
+        transform: scale(1);
+        opacity: 1;
+        box-shadow: 0 0 0 8px rgba(244, 114, 182, 0);
+      }
+
+      100% {
+        transform: scale(0.95);
+        opacity: 0.8;
+        box-shadow: 0 0 0 0 rgba(244, 114, 182, 0);
+      }
+    }
+
+    .hero h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(38px, 5.5vw, 60px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+    }
+
+    .gradient-title {
+      background: linear-gradient(120deg, #ffffff 30%, #f472b6 70%, #818cf8 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 20px;
+      font-weight: 600;
+      color: #c084fc;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      border-radius: 6px;
+      color: #a5b4fc;
+    }
+
+    .hero-bio {
+      color: var(--text-muted);
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 660px;
+      margin-bottom: 30px;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 13px 24px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 15px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #a855b8 100%);
+      color: white;
+      box-shadow: 0 10px 25px var(--primary-glow);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px var(--primary-glow);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    /* Live Telemetry Card (Hero Right) */
+    .telemetry-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-highlight);
+      border-radius: var(--radius-xl);
+      padding: 26px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .telemetry-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--indigo), var(--emerald));
+    }
+
+    .telemetry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .telemetry-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .telemetry-live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.12);
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+
+    .telemetry-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    .telemetry-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .metric-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    .metric-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .metric-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .val-green {
+      color: #34d399;
+    }
+
+    .val-pink {
+      color: #f472b6;
+    }
+
+    .val-blue {
+      color: #818cf8;
+    }
+
+    .val-amber {
+      color: #fbbf24;
+    }
+
+    .telemetry-footer {
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    /* Section Styles */
+    section {
+      padding: 60px 0;
+    }
+
+    .section-head {
+      margin-bottom: 40px;
+    }
+
+    .section-eyebrow {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .section-head h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(26px, 3.5vw, 36px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .section-head p {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 650px;
+    }
+
+    /* Pipeline Architecture Flow Visualizer */
+    .flow-container {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 35px 30px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+
+    .pipeline-stepper {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+      position: relative;
+    }
+
+    @media (max-width: 992px) {
+      .pipeline-stepper {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .pipeline-stepper {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .step-node {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px 16px;
+      text-align: center;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .step-node:hover {
+      transform: translateY(-5px);
+      border-color: var(--border-accent);
+      box-shadow: 0 10px 25px rgba(217, 70, 139, 0.15);
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .step-node.active .step-number {
+      background: linear-gradient(135deg, var(--primary), var(--indigo));
+      color: white;
+      border: none;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .step-icon {
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    .step-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .step-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Cards Grid */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 850px) {
+
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-icon-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border-radius: var(--radius-md);
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    .icon-primary {
+      background: rgba(217, 70, 139, 0.15);
+      color: #f472b6;
+      border: 1px solid rgba(217, 70, 139, 0.25);
+    }
+
+    .icon-indigo {
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.25);
+    }
+
+    .icon-emerald {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .card h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    .task-badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(217, 70, 139, 0.12);
+      color: #f472b6;
+      border: 1px solid rgba(217, 70, 139, 0.2);
+      margin-bottom: 12px;
+    }
+
+    /* Workflow Code Snippet Blocks */
+    .code-box {
+      background: #090b11;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-top: 15px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .code-box-header {
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .code-box-header span {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .code-box pre {
+      padding: 14px;
+      font-size: 12px;
+      color: #e2e8f0;
+      line-height: 1.6;
+      overflow-x: auto;
+    }
+
+    .code-hl-key {
+      color: #f472b6;
+    }
+
+    .code-hl-val {
+      color: #38bdf8;
+    }
+
+    .code-hl-comment {
+      color: #64748b;
+      font-style: italic;
+    }
+
+    /* Slack Alert Showcase Section */
+    .slack-showcase {
+      background: #1a1d28;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    .slack-window-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 24px;
+    }
+
+    .slack-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .slack-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .s-red {
+      background: #ff5f56;
+    }
+
+    .s-yellow {
+      background: #ffbd2e;
+    }
+
+    .s-green {
+      background: #27c93f;
+    }
+
+    .slack-channel-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .slack-channel-name span {
+      color: #94a3b8;
+      font-weight: 400;
+      font-size: 12px;
+    }
+
+    .slack-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .slack-msg {
+      display: flex;
+      gap: 14px;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      transition: background 0.2s ease;
+    }
+
+    .slack-msg:hover {
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .slack-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #4a154b, #611f69);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .slack-body {
+      flex: 1;
+    }
+
+    .slack-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .slack-sender {
+      font-weight: 700;
+      font-size: 14px;
+      color: #ffffff;
+    }
+
+    .slack-app-badge {
+      font-size: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #e2e8f0;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .slack-time {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .slack-card-attachment {
+      border-left: 4px solid var(--slack-green);
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 12px 16px;
+      margin-top: 8px;
+    }
+
+    .slack-card-attachment.fail {
+      border-left-color: var(--rose);
+    }
+
+    .slack-card-attachment.rollback {
+      border-left-color: #38bdf8;
+    }
+
+    .attachment-title {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .attachment-fields {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .field-block strong {
+      display: block;
+      color: var(--text-dim);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .field-block span {
+      font-family: 'JetBrains Mono', monospace;
+      color: #cbd5e1;
+    }
+
+    /* Skills Grid */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .skill-category {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+    }
+
+    .skill-category h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.04);
+      color: #cbd5e1;
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+
+    .tag:hover {
+      background: rgba(217, 70, 139, 0.15);
+      border-color: rgba(217, 70, 139, 0.35);
+      color: #f472b6;
+    }
+
+    /* Contact Section */
+    .contact-box {
+      background: linear-gradient(135deg, rgba(217, 70, 139, 0.1) 0%, rgba(99, 102, 241, 0.12) 100%);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-xl);
+      padding: 50px 36px;
+      text-align: center;
+      position: relative;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .contact-box h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(28px, 4vw, 38px);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .contact-box p {
+      color: var(--text-muted);
+      max-width: 580px;
+      margin: 0 auto 30px;
+      font-size: 16px;
+    }
+
+    .contact-links-grid {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .contact-link-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 22px;
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .contact-link-pill:hover {
+      border-color: var(--primary);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px var(--primary-glow);
+      color: #f472b6;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+      margin-top: 50px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="top-nav">
+    <div class="container nav-wrap">
+      <a href="../index.html" class="brand-link">
+        <div class="brand-icon">☁</div>
+        Cloud <span>Architects</span>
+      </a>
+
+      <div class="nav-actions">
+        <a href="../index.html" class="nav-btn nav-btn-back">
+          ← Back to Team
+        </a>
+        <a href="#pipeline-architecture" class="nav-btn nav-btn-highlight">
+          ⚡ Pipeline Flow
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container hero-grid">
+
+        <div class="hero-content">
+          <div class="hero-eyebrow">
+            <span class="pulse-dot"></span>
+            Pipeline Engineer · CI/CD &amp; Observability Lead
+          </div>
+
+          <h1>
+            Muhammad Jan <span class="gradient-title">Zikria</span>
+          </h1>
+
+          <div class="hero-subtitle">
+            Pipeline Architect &amp; DevOps Specialist
+            <span class="hero-badge">Cloud Architects</span>
+          </div>
+
+          <p class="hero-bio">
+            Leading the CI/CD engineering for Cloud Architects. I architect
+            <strong>GitHub Actions workflows</strong>, zero-downtime deployment pipelines,
+            instant <strong>Slack notification alerts</strong>, and one-click rollback disaster
+            recovery systems that ensure every merge reaches production with bulletproof reliability.
+          </p>
+
+          <div class="hero-cta">
+            <a href="#pipeline-architecture" class="btn btn-primary">
+              <span>⚡</span> Explore CI/CD Workflows
+            </a>
+            <a href="#slack-alerts" class="btn btn-secondary">
+              <span>🔔</span> View Slack Alerts
+            </a>
+            <a href="https://github.com/muhammadzikria" target="_blank" rel="noopener noreferrer"
+              class="btn btn-secondary">
+              <span>⑂</span> GitHub Profile
+            </a>
+          </div>
+        </div>
+
+        <!-- Telemetry Card -->
+        <aside class="telemetry-card">
+          <div class="telemetry-header">
+            <div class="telemetry-title">
+              <span>⚡</span> Pipeline Telemetry
+            </div>
+            <div class="telemetry-live-badge">
+              <span class="telemetry-dot"></span> LIVE
+            </div>
+          </div>
+
+          <div class="telemetry-metrics">
+            <div class="metric-row">
+              <span class="metric-label">Deployment Engine</span>
+              <span class="metric-value val-blue">GitHub Actions</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Target Infrastructure</span>
+              <span class="metric-value val-pink">Ubuntu EC2 / Nginx</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Avg Pipeline Duration</span>
+              <span class="metric-value val-green">~42 seconds</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Slack Webhook Delivery</span>
+              <span class="metric-value val-green">&lt; 1.8s</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Rollback Execution</span>
+              <span class="metric-value val-amber">1-Click (&lt; 5s)</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Release Retention</span>
+              <span class="metric-value">Keep 5 Releases</span>
+            </div>
+          </div>
+
+          <div class="telemetry-footer">
+            Integrated with #TEAM-alerts &amp; #TEAM-dev
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- Pipeline Architecture Flow -->
+    <section id="pipeline-architecture">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-eyebrow">AUTOMATED DELIVERY LIFECYCLE</span>
+          <h2>Zero-Downtime CI/CD Pipeline Architecture</h2>
+          <p>
+            From the moment code is pushed or a PR is opened, the automated pipeline verifies,
+            builds, deploys, checks health, and broadcasts live status to the entire team.
+          </p>
+        </div>
+
+        <div class="flow-container">
+          <div class="pipeline-stepper">
+
+            <div class="step-node active">
+              <span class="step-number">01</span>
+              <div class="step-icon">⑂</div>
+              <h4 class="step-title">Pull Request</h4>
+              <p class="step-desc">Branch push triggers automated check.yml workflow runner.</p>
+            </div>
+
+            <div class="step-node active">
+              <span class="step-number">02</span>
+              <div class="step-icon">🛡️</div>
+              <h4 class="step-title">Quality Gate</h4>
+              <p class="step-desc">HTML title audit, internal dead-link audit, asset &lt; 1MB size checks.</p>
+            </div>
+
+            <div class="step-node active">
+              <span class="step-number">03</span>
+              <div class="step-icon">🔐</div>
+              <h4 class="step-title">Secure SSH Auth</h4>
+              <p class="step-desc">Deploy runner verifies host key via SSH_KNOWN_HOSTS &amp; DEPLOY_SSH_KEY.</p>
+            </div>
+
+            <div class="step-node active">
+              <span class="step-number">04</span>
+              <div class="step-icon">⚡</div>
+              <h4 class="step-title">Atomic Release</h4>
+              <p class="step-desc">New timestamped directory, stamp commit ID, atomic symlink switch.</p>
+            </div>
+
+            <div class="step-node active">
+              <span class="step-number">05</span>
+              <div class="step-icon">🩺</div>
+              <h4 class="step-title">Health Check</h4>
+              <p class="step-desc">External runner curls live domain and confirms commit SHA in footer.</p>
+            </div>
+
+            <div class="step-node active">
+              <span class="step-number">06</span>
+              <div class="step-icon">🔔</div>
+              <h4 class="step-title">Slack Broadcast</h4>
+              <p class="step-desc">Instant notification dispatched to #TEAM-alerts with rich run details.</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Responsibilities / Phase Deliverables -->
+    <section>
+      <div class="container">
+        <div class="section-head">
+          <span class="section-eyebrow">ENGINEERING OWNERSHIP</span>
+          <h2>Sprint Deliverables &amp; Phase Leadership</h2>
+          <p>
+            Specific responsibilities and automated systems authored for the Cloud Architects ShipIt challenge.
+          </p>
+        </div>
+
+        <div class="grid-2">
+
+          <!-- PR Validation (A8) -->
+          <article class="card">
+            <span class="task-badge">Task A8 · Lead</span>
+            <div class="card-icon-wrap icon-primary">🛡️</div>
+            <h3>Pull Request Validation Pipeline</h3>
+            <p>
+              Engineered <code>.github/workflows/check.yml</code> and integrated with
+              <code>scripts/check-site.sh</code>. Blocks bad merges before they hit production
+              by validating HTML titles, checking broken internal links, and enforcing a 1MB file size ceiling.
+            </p>
+            <div class="code-box">
+              <div class="code-box-header">
+                <span>.github/workflows/check.yml</span>
+                <span>Ubuntu Runner</span>
+              </div>
+              <pre><span class="code-hl-key">on:</span> [pull_request]
+<span class="code-hl-key">jobs:</span>
+  <span class="code-hl-key">validate-site:</span>
+    <span class="code-hl-key">runs-on:</span> ubuntu-latest
+    <span class="code-hl-key">steps:</span>
+      - <span class="code-hl-key">uses:</span> actions/checkout@v4
+      - <span class="code-hl-key">run:</span> bash scripts/check-site.sh site/</pre>
+            </div>
+          </article>
+
+          <!-- Merge Deployment (A9) -->
+          <article class="card">
+            <span class="task-badge">Task A9 · Lead</span>
+            <div class="card-icon-wrap icon-indigo">🚀</div>
+            <h3>Continuous Zero-Downtime Deployment</h3>
+            <p>
+              Authored <code>.github/workflows/deploy.yml</code> and <code>scripts/deploy.sh</code>.
+              On every push to <code>main</code>, code is safely staged, deployed into timestamped release folders,
+              stamped with git author and commit SHA, linked atomically via current symlink, and pruned to keep 5 newest
+              versions.
+            </p>
+            <div class="code-box">
+              <div class="code-box-header">
+                <span>.github/workflows/deploy.yml</span>
+                <span>SSH Deployment</span>
+              </div>
+              <pre><span class="code-hl-key">on:</span>
+  <span class="code-hl-key">push:</span>
+    <span class="code-hl-key">branches:</span> [main]
+  <span class="code-hl-key">workflow_dispatch:</span>
+<span class="code-hl-comment"># Strict SSH host check & zero-downtime release</span></pre>
+            </div>
+          </article>
+
+          <!-- Rollback Button (A10) -->
+          <article class="card">
+            <span class="task-badge">Task A10 · Lead</span>
+            <div class="card-icon-wrap icon-emerald">🔄</div>
+            <h3>One-Click Disaster Recovery (Rollback)</h3>
+            <p>
+              Engineered <code>.github/workflows/rollback.yml</code> and <code>scripts/rollback.sh</code>.
+              Triggerable directly from GitHub Actions tab. Point the live symlink back to the previous stable release
+              in seconds, log audit trail in <code>deploys.log</code>, and notify the team on Slack.
+            </p>
+            <div class="code-box">
+              <div class="code-box-header">
+                <span>.github/workflows/rollback.yml</span>
+                <span>Manual Dispatch</span>
+              </div>
+              <pre><span class="code-hl-key">on:</span>
+  <span class="code-hl-key">workflow_dispatch:</span>
+<span class="code-hl-comment"># Instantly swaps /current symlink to previous release</span></pre>
+            </div>
+          </article>
+
+          <!-- Self-Deploying Scripts (A13) -->
+          <article class="card">
+            <span class="task-badge">Task A13 · Lead</span>
+            <div class="card-icon-wrap icon-primary">⚙️</div>
+            <h3>Automated Script &amp; Crontab Deployment</h3>
+            <p>
+              Extended the deployment engine so server automation scripts (<code>status.sh</code>,
+              <code>traffic-report.sh</code>,
+              <code>rollback.sh</code>) deploy themselves to <code>/var/www/TEAM/bin/</code> and automatically refresh
+              the
+              deploy user's crontab without manual SSH access.
+            </p>
+            <div class="code-box">
+              <div class="code-box-header">
+                <span>crontab automation</span>
+                <span>Scheduled Jobs</span>
+              </div>
+              <pre><span class="code-hl-comment"># Deploy user scheduled automation</span>
+* * * * * /var/www/TEAM/bin/status.sh
+*/5 * * * * /var/www/TEAM/bin/traffic-report.sh</pre>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Slack Webhook Alert Showcase -->
+    <section id="slack-alerts">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-eyebrow">REAL-TIME OBSERVABILITY</span>
+          <h2>Slack Webhook &amp; Team Alerts Integration</h2>
+          <p>
+            Every workflow event dispatches formatted cards to <code>#TEAM-alerts</code> and <code>#TEAM-dev</code>.
+            No sensitive webhook URLs or keys are ever exposed in code.
+          </p>
+        </div>
+
+        <div class="slack-showcase">
+          <div class="slack-window-bar">
+            <div class="slack-dots">
+              <div class="slack-dot s-red"></div>
+              <div class="slack-dot s-yellow"></div>
+              <div class="slack-dot s-green"></div>
+            </div>
+            <div class="slack-channel-name">
+              #cloud-architects-alerts <span>| Channel Topic: Production Deploys &amp; Incident Broadcasts</span>
+            </div>
+          </div>
+
+          <div class="slack-feed">
+
+            <!-- Successful Deploy Message -->
+            <div class="slack-msg">
+              <div class="slack-avatar">🤖</div>
+              <div class="slack-body">
+                <div class="slack-meta">
+                  <span class="slack-sender">ShipIt Bot</span>
+                  <span class="slack-app-badge">APP</span>
+                  <span class="slack-time">Today at 10:24 AM</span>
+                </div>
+                <div class="slack-card-attachment">
+                  <div class="attachment-title">🚀 Deployment #14 Succeeded on Main</div>
+                  <div>Live release successfully published and external health checks confirmed healthy!</div>
+                  <div class="attachment-fields">
+                    <div class="field-block">
+                      <strong>Commit SHA</strong>
+                      <span>aadda78</span>
+                    </div>
+                    <div class="field-block">
+                      <strong>Author</strong>
+                      <span>muhammadzikria</span>
+                    </div>
+                    <div class="field-block">
+                      <strong>Release Folder</strong>
+                      <span>20261118-102400-aadda78</span>
+                    </div>
+                    <div class="field-block">
+                      <strong>Live Domain Check</strong>
+                      <span style="color: #34d399;">HTTP 200 OK (Verified)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rollback Alert Message -->
+            <div class="slack-msg">
+              <div class="slack-avatar" style="background: linear-gradient(135deg, #0284c7, #0369a1);">🔄</div>
+              <div class="slack-body">
+                <div class="slack-meta">
+                  <span class="slack-sender">Rollback Guardian</span>
+                  <span class="slack-app-badge">APP</span>
+                  <span class="slack-time">Today at 10:28 AM</span>
+                </div>
+                <div class="slack-card-attachment rollback">
+                  <div class="attachment-title">⚠️ Site Rollback Executed Successfully</div>
+                  <div>Live site <code>/current</code> symlink switched to prior release.</div>
+                  <div class="attachment-fields">
+                    <div class="field-block">
+                      <strong>Triggered By</strong>
+                      <span>Muhammad Zikria</span>
+                    </div>
+                    <div class="field-block">
+                      <strong>Target Release</strong>
+                      <span>20261118-094512-3c005c2</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Skillset -->
+    <section>
+      <div class="container">
+        <div class="section-head">
+          <span class="section-eyebrow">EXPERTISE &amp; TOOLS</span>
+          <h2>Technical Skills &amp; Domain Knowledge</h2>
+          <p>
+            Tools and techniques mastered to keep pipelines resilient, deployments continuous, and teams aligned.
+          </p>
+        </div>
+
+        <div class="skills-grid">
+
+          <div class="skill-category">
+            <h3><span>⚡</span> CI/CD &amp; Orchestration</h3>
+            <div class="skill-tags">
+              <span class="tag">GitHub Actions</span>
+              <span class="tag">Workflow YAML</span>
+              <span class="tag">Self-Hosted Runners</span>
+              <span class="tag">Secrets Management</span>
+              <span class="tag">Environment Matrix</span>
+              <span class="tag">Artifacts Handling</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <h3><span>🔔</span> Observability &amp; ChatOps</h3>
+            <div class="skill-tags">
+              <span class="tag">Slack Incoming Webhooks</span>
+              <span class="tag">Slack Payload Blocks</span>
+              <span class="tag">GitHub Slack App</span>
+              <span class="tag">Health Probing</span>
+              <span class="tag">Incident Alerting</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <h3><span>☁️</span> Cloud &amp; Linux Admin</h3>
+            <div class="skill-tags">
+              <span class="tag">Ubuntu Linux</span>
+              <span class="tag">Nginx Web Server</span>
+              <span class="tag">SSH Host Key Validation</span>
+              <span class="tag">Bash Scripting</span>
+              <span class="tag">Cron Automation</span>
+              <span class="tag">AWS EC2</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <h3><span>🛡️</span> Quality &amp; Governance</h3>
+            <div class="skill-tags">
+              <span class="tag">Dead-Link Auditing</span>
+              <span class="tag">Atomic Deployments</span>
+              <span class="tag">PR Quality Gates</span>
+              <span class="tag">Merge Conflict Resolution</span>
+              <span class="tag">Jira Kanban Tracking</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact & Connect -->
+    <section>
+      <div class="container">
+        <div class="contact-box">
+          <span class="section-eyebrow" style="color: #f472b6;">GET IN TOUCH</span>
+          <h2>Let's Build Reliable Systems Together</h2>
+          <p>
+            Connect for DevOps engineering, continuous integration pipelines,
+            automated cloud deployments, or collaborative software challenges.
+          </p>
+
+          <div class="contact-links-grid">
+            <a href="mailto:muhammadjanzikria@gmail.com" class="contact-link-pill">
+              <span>✉️</span> muhammadjanzikria@gmail.com
+            </a>
+            <a href="https://github.com/muhammadzikria" target="_blank" rel="noopener noreferrer"
+              class="contact-link-pill">
+              <span>⑂</span> github.com/muhammadzikria
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="contact-link-pill">
+              <span>💼</span> LinkedIn Profile
+            </a>
+            <a href="../index.html#team" class="contact-link-pill">
+              <span>☁️</span> Cloud Architects Team
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2026 Cloud Architects · Designed &amp; Engineered by <a href="zikria.html">Muhammad Zikria</a></p>
+      <p style="margin-top: 6px;">ShipIt &amp; TrackIt DevOps Bootcamp Sprint · AntonX Private Limited</p>
+    </div>
+  </footer>
+
+</body>
+
+</html>
