@@ -1,0 +1,55 @@
+
+name: Website CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Website
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify website files
+        run: |
+          test -f site/index.html
+          test -f site/style.css
+          echo "Required website files exist."
+
+      - name: Validate HTML
+        run: |
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+
+          class Parser(HTMLParser):
+              pass
+
+          files = sorted(Path("site").rglob("*.html"))
+          if not files:
+              raise SystemExit("No HTML files found.")
+
+          for file in files:
+              parser = Parser(convert_charrefs=True)
+              parser.feed(file.read_text(encoding="utf-8"))
+              parser.close()
+              print(f"Parsed: {file}")
+
+          print("HTML parsing completed.")
+          PY
+
+      - name: Check CSS is not empty
+        run: |
+          test -s site/style.css
+          echo "CSS file is not empty."
