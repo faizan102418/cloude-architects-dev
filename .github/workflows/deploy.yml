@@ -1,0 +1,112 @@
+
+name: Website CD
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy Website to EC2
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate website
+        run: |
+          bash scripts/check-site.sh site
+          bash -n scripts/deploy.sh
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.EC2_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Upload website and scripts
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        run: |
+          set -euo pipefail
+
+          SSH="ssh -i $HOME/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o BatchMode=yes"
+          REMOTE="$EC2_USER@$EC2_HOST"
+          BASE="/var/www/cloudarchitects/upload"
+
+          $SSH "$REMOTE" "mkdir -p '$BASE/site' '$BASE/scripts'"
+
+          rsync -az --delete -e "$SSH" site/ "$REMOTE:$BASE/site/"
+          rsync -az --delete -e "$SSH" scripts/ "$REMOTE:$BASE/scripts/"
+
+      - name: Activate release
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        run: |
+          ssh -i ~/.ssh/deploy_key \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            -o BatchMode=yes \
+            "$EC2_USER@$EC2_HOST" \
+            "bash /var/www/cloudarchitects/upload/scripts/deploy.sh '$GITHUB_SHA' '$GITHUB_ACTOR'"
+
+      - name: Verify deployed commit
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error \
+            --retry 3 --retry-delay 2 \
+            --max-time 15 \
+            http://cloud-architects.duckdns.org/ \
+            | grep -F "$GITHUB_SHA"
+
+      - name: Notify Slack
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          RESULT: ${{ job.status }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          result = os.environ["RESULT"]
+          commit = os.environ["GITHUB_SHA"]
+          actor = os.environ["GITHUB_ACTOR"]
+          repo = os.environ["GITHUB_REPOSITORY"]
+          run_id = os.environ["GITHUB_RUN_ID"]
+
+          message = (
+              f"Website deployment: {result}\n"
+              f"Commit: {commit}\n"
+              f"Actor: {actor}\n"
+              f"Run: https://github.com/{repo}/actions/runs/{run_id}"
+          )
+
+          data = json.dumps({"text": message}).encode()
+          request = urllib.request.Request(
+              os.environ["SLACK_WEBHOOK_URL"],
+              data=data,
+              headers={"Content-Type": "application/json"},
+          )
+          urllib.request.urlopen(request, timeout=15).close()
+          PY
