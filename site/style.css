@@ -303,7 +303,37 @@ h1, h2, h3 {
   padding: 32px 25px;
   text-align: center;
   box-shadow: var(--shadow);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.member-card:hover {
+  transform: translateY(-6px);
+  border-color: #f0a6ca;
+  box-shadow: 0 20px 45px rgba(169, 66, 119, 0.16);
+}
+
+.member-card-badge {
+  display: inline-block;
+  align-self: center;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+  background: rgba(217, 70, 139, 0.1);
+  color: var(--primary);
+  border: 1px solid rgba(217, 70, 139, 0.2);
+}
+
+.member-card-badge.badge-pipeline {
+  background: rgba(99, 102, 241, 0.1);
+  color: #6366f1;
+  border-color: rgba(99, 102, 241, 0.25);
 }
 
 .member-avatar {
@@ -319,6 +349,13 @@ h1, h2, h3 {
   font-size: 27px;
   font-weight: 800;
   font-family: 'Plus Jakarta Sans', sans-serif;
+  box-shadow: 0 8px 18px rgba(169, 66, 119, 0.15);
+}
+
+.member-avatar.avatar-zikria {
+  background: linear-gradient(135deg, #6366f1, #d9468b);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
 }
 
 .member-card h3 {
