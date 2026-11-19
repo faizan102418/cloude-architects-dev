@@ -28,7 +28,25 @@ jobs:
         run: |
           bash scripts/check-site.sh site
           bash -n scripts/deploy.sh
+      - name: Reject outdated deployment
+        run: |
+          set -euo pipefail
 
+          LATEST_SHA=$(git ls-remote origin refs/heads/main | cut -f1)
+
+          if [[ -z "$LATEST_SHA" ]]; then
+            echo "ERROR: Could not determine latest main commit."
+            exit 1
+          fi
+
+          if [[ "$GITHUB_SHA" != "$LATEST_SHA" ]]; then
+            echo "ERROR: Outdated deployment rejected."
+            echo "Workflow SHA: $GITHUB_SHA"
+            echo "Latest main:  $LATEST_SHA"
+            exit 1
+          fi
+
+          echo "Deployment commit matches latest main."
       - name: Configure SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
