@@ -2,60 +2,130 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE="/var/www/cloudarchitects"
-OUTPUT="$BASE/live/status.html"
+# Production paths; override BASE for local testing.
+BASE="${BASE:-/var/www/cloudarchitects}"
+TEMPLATE="${TEMPLATE:-$BASE/templates/status.html}"
+OUTPUT="${OUTPUT:-$BASE/live/status.html}"
 
-HOSTNAME=$(hostname)
-TIME=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
+# Collect server information.
+SERVER_HOSTNAME=$(hostname)
+UPDATED=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
 UPTIME=$(uptime -p)
-LOAD=$(cat /proc/loadavg | awk '{print $1, $2, $3}')
-MEMORY=$(free -h | awk '/^Mem:/ {print $3 " / " $2}')
-DISK=$(df -h / | awk 'NR==2 {print $3 " / " $2 " (" $5 " used)"}')
-DISK_PERCENT=$(df -P / | awk 'NR==2 {gsub("%","",$5); print $5}')
+LOAD=$(awk '{print $1 ", " $2 ", " $3}' /proc/loadavg)
 
+MEMORY=$(free -h | awk '/^Mem:/ {
+  print $3 " / " $2
+}')
+
+DISK=$(df -h / | awk 'NR==2 {
+  print $3 " / " $2 " (" $5 " used)"
+}')
+
+DISK_PERCENT=$(df -P / | awk 'NR==2 {
+  gsub("%", "", $5)
+  print $5
+}')
+
+# Check Nginx service status.
 if systemctl is-active --quiet nginx; then
-  NGINX="RUNNING"
+  NGINX="● ACTIVE & RUNNING"
 else
-  NGINX="DOWN - WARNING"
+  NGINX="● DOWN - WARNING"
 fi
 
-RELEASE=$(basename "$(readlink -f "$BASE/current")")
-RECENT=$(tail -n 5 "$BASE/deploys.log" 2>/dev/null || true)
+# Identify active release.
+if [[ -L "$BASE/current" ]]; then
+  RELEASE=$(readlink -f "$BASE/current")
+else
+  RELEASE="No active release"
+fi
 
+# Read recent deployment history.
+if [[ -r "$BASE/deploys.log" ]]; then
+  RECENT=$(tail -n 5 "$BASE/deploys.log")
+else
+  RECENT="No deployment history available"
+fi
+
+# Check disk health.
 if (( DISK_PERCENT >= 90 )); then
   DISK_WARNING="WARNING: Disk usage is high!"
 else
   DISK_WARNING="OK"
 fi
 
-cat > "$OUTPUT" <<EOF
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="60">
-  <title>Cloude Architects - Server Status</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 30px; }
-    pre { background: #f4f4f4; padding: 15px; overflow-x: auto; }
-    .warning { color: red; font-weight: bold; }
-  </style>
-</head>
-<body>
-  <h1>Cloude Architects - Live Server Status</h1>
-  <p><strong>Hostname:</strong> $HOSTNAME</p>
-  <p><strong>Updated:</strong> $TIME</p>
-  <p><strong>Uptime:</strong> $UPTIME</p>
-  <p><strong>Load Average:</strong> $LOAD</p>
-  <p><strong>Memory:</strong> $MEMORY</p>
-  <p><strong>Disk:</strong> $DISK</p>
-  <p class="warning">$DISK_WARNING</p>
-  <p><strong>Nginx:</strong> $NGINX</p>
-  <p><strong>Active Release:</strong> $RELEASE</p>
-  <h2>Last Five Deployments / Rollbacks</h2>
-  <pre>$RECENT</pre>
-</body>
-</html>
-EOF
+# Verify the template exists.
+if [[ ! -r "$TEMPLATE" ]]; then
+  echo "ERROR: Status template not found: $TEMPLATE" >&2
+  exit 1
+fi
 
-echo "Status page generated: $OUTPUT"
+# Pass monitoring values to Python through environment variables.
+export SERVER_HOSTNAME UPDATED UPTIME LOAD MEMORY DISK
+export NGINX RELEASE RECENT DISK_WARNING TEMPLATE OUTPUT
+
+# Render the template using Python's standard library.
+python3 <<'PY'
+import html
+import os
+import tempfile
+from pathlib import Path
+
+template_path = Path(os.environ["TEMPLATE"])
+output_path = Path(os.environ["OUTPUT"])
+
+content = template_path.read_text(encoding="utf-8")
+
+values = {
+    "HOSTNAME": os.environ["SERVER_HOSTNAME"],
+    "UPDATED": os.environ["UPDATED"],
+    "UPTIME": os.environ["UPTIME"],
+    "LOAD": os.environ["LOAD"],
+    "MEMORY": os.environ["MEMORY"],
+    "DISK": os.environ["DISK"],
+    "NGINX": os.environ["NGINX"],
+    "RELEASE": os.environ["RELEASE"],
+    "RECENT": os.environ["RECENT"],
+    "DISK_WARNING": os.environ["DISK_WARNING"],
+}
+
+# Require every placeholder before rendering.
+for key in values:
+    placeholder = "{{" + key + "}}"
+
+    if placeholder not in content:
+        raise ValueError(
+            f"Missing placeholder in template: {placeholder}"
+        )
+
+    content = content.replace(
+        placeholder,
+        html.escape(values[key], quote=True)
+    )
+
+# Write to a temporary file and replace atomically.
+output_path.parent.mkdir(parents=True, exist_ok=True)
+
+temporary_path = None
+
+try:
+    with tempfile.NamedTemporaryFile(
+        mode="w",
+        encoding="utf-8",
+        dir=output_path.parent,
+        prefix=".status-",
+        suffix=".tmp",
+        delete=False,
+    ) as temporary_file:
+        temporary_path = Path(temporary_file.name)
+        temporary_file.write(content)
+
+    temporary_path.chmod(0o644)
+    temporary_path.replace(output_path)
+
+finally:
+    if temporary_path is not None:
+        temporary_path.unlink(missing_ok=True)
+
+print(f"Status dashboard generated: {output_path}")
+PY

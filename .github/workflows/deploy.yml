@@ -24,10 +24,51 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Validate website
+      - name: Validate website and monitoring
         run: |
+          set -euo pipefail
+
           bash scripts/check-site.sh site
+
           bash -n scripts/deploy.sh
+          bash -n scripts/status.sh
+          bash -n scripts/traffic-report.sh
+
+          test -s live/status.html
+          test -s live/report.html
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          templates = {
+              "live/status.html": {
+                  "HOSTNAME", "UPDATED", "UPTIME",
+                  "LOAD", "MEMORY", "DISK", "NGINX",
+                  "RELEASE", "RECENT", "DISK_WARNING",
+              },
+              "live/report.html": {
+                  "UPDATED", "TOTAL", "ERRORS_404",
+                  "TOP_PAGES", "TOP_IPS", "TOP_MISSING",
+              },
+          }
+
+          for filename, keys in templates.items():
+              content = Path(filename).read_text(
+                  encoding="utf-8"
+              )
+
+              for key in keys:
+                  placeholder = "{{" + key + "}}"
+
+                  if placeholder not in content:
+                      raise SystemExit(
+                          f"ERROR: {filename} missing "
+                          f"{placeholder}"
+                      )
+
+              print(f"Validated: {filename}")
+          PY
+
       - name: Reject outdated deployment
         run: |
           set -euo pipefail
@@ -47,19 +88,28 @@ jobs:
           fi
 
           echo "Deployment commit matches latest main."
+
       - name: Configure SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           SSH_KNOWN_HOSTS: ${{ secrets.EC2_KNOWN_HOSTS }}
         run: |
+          set -euo pipefail
+
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+
+          printf '%s\n' "$SSH_PRIVATE_KEY" \
+            > ~/.ssh/deploy_key
+
           chmod 600 ~/.ssh/deploy_key
-          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+          printf '%s\n' "$SSH_KNOWN_HOSTS" \
+            > ~/.ssh/known_hosts
+
           chmod 600 ~/.ssh/known_hosts
 
-      - name: Upload website and scripts
+      - name: Upload website, scripts and templates
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USER: ${{ secrets.EC2_USER }}
@@ -67,19 +117,29 @@ jobs:
           set -euo pipefail
 
           SSH="ssh -i $HOME/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o BatchMode=yes"
+
           REMOTE="$EC2_USER@$EC2_HOST"
           BASE="/var/www/cloudarchitects/upload"
 
-          $SSH "$REMOTE" "mkdir -p '$BASE/site' '$BASE/scripts'"
+          $SSH "$REMOTE" \
+            "mkdir -p '$BASE/site' '$BASE/scripts' '$BASE/live'"
 
-          rsync -az --delete -e "$SSH" site/ "$REMOTE:$BASE/site/"
-          rsync -az --delete -e "$SSH" scripts/ "$REMOTE:$BASE/scripts/"
+          rsync -az --delete -e "$SSH" \
+            site/ "$REMOTE:$BASE/site/"
+
+          rsync -az --delete -e "$SSH" \
+            scripts/ "$REMOTE:$BASE/scripts/"
+
+          rsync -az --delete -e "$SSH" \
+            live/ "$REMOTE:$BASE/live/"
 
       - name: Activate release
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USER: ${{ secrets.EC2_USER }}
         run: |
+          set -euo pipefail
+
           ssh -i ~/.ssh/deploy_key \
             -o IdentitiesOnly=yes \
             -o StrictHostKeyChecking=yes \
@@ -90,12 +150,47 @@ jobs:
       - name: Verify deployed commit
         run: |
           set -euo pipefail
+
           curl --fail --silent --show-error \
             --location \
             --retry 3 --retry-delay 2 \
             --max-time 15 \
             https://cloud-architects.duckdns.org/ \
             | grep -F "$GITHUB_SHA"
+
+      - name: Verify monitoring dashboards
+        run: |
+          set -euo pipefail
+
+          BASE_URL="https://cloud-architects.duckdns.org"
+
+          for page in status report; do
+            URL="$BASE_URL/live/$page.html"
+
+            echo "Checking $URL"
+
+            CONTENT=$(curl \
+              --fail \
+              --silent \
+              --show-error \
+              --location \
+              --retry 3 \
+              --retry-delay 2 \
+              --max-time 15 \
+              "$URL")
+
+            if [[ "$CONTENT" != *"<!DOCTYPE html>"* ]]; then
+              echo "ERROR: Invalid HTML response: $URL"
+              exit 1
+            fi
+
+            if grep -Eq '\{\{[A-Z_0-9]+\}\}' <<< "$CONTENT"; then
+              echo "ERROR: Unresolved placeholders: $URL"
+              exit 1
+            fi
+
+            echo "Dashboard verified: $URL"
+          done
 
       - name: Notify Slack
         if: always()
@@ -121,11 +216,22 @@ jobs:
               f"Run: https://github.com/{repo}/actions/runs/{run_id}"
           )
 
+          webhook = os.environ.get("SLACK_WEBHOOK_URL")
+
+          if not webhook:
+              print("Slack webhook not configured; skipping.")
+              raise SystemExit(0)
+
           data = json.dumps({"text": message}).encode()
+
           request = urllib.request.Request(
-              os.environ["SLACK_WEBHOOK_URL"],
+              webhook,
               data=data,
               headers={"Content-Type": "application/json"},
           )
-          urllib.request.urlopen(request, timeout=15).close()
+
+          urllib.request.urlopen(
+              request,
+              timeout=15
+          ).close()
           PY
