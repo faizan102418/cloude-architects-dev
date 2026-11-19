@@ -2,25 +2,34 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE="/var/www/cloudarchitects"
-LOG="/var/log/nginx/cloudarchitects-access.log"
-OUTPUT="$BASE/live/report.html"
+BASE="${BASE:-/var/www/cloudarchitects}"
+LOG="${LOG:-/var/log/nginx/cloudarchitects-access.log}"
+TEMPLATE="${TEMPLATE:-$BASE/templates/report.html}"
+OUTPUT="${OUTPUT:-$BASE/live/report.html}"
 
-[[ -r "$LOG" ]] || {
-  echo "ERROR: Cannot read Nginx access log"
+if [[ ! -r "$LOG" ]]; then
+  echo "ERROR: Cannot read Nginx access log: $LOG" >&2
   exit 1
-}
+fi
 
-python3 - "$LOG" "$OUTPUT" <<'PY'
-import sys
-import re
+if [[ ! -r "$TEMPLATE" ]]; then
+  echo "ERROR: Traffic template not found: $TEMPLATE" >&2
+  exit 1
+fi
+
+python3 - "$LOG" "$TEMPLATE" "$OUTPUT" <<'PY'
 import html
-from pathlib import Path
+import ipaddress
+import re
+import sys
+import tempfile
 from collections import Counter
 from datetime import datetime, timezone
+from pathlib import Path
 
 log_path = Path(sys.argv[1])
-output_path = Path(sys.argv[2])
+template_path = Path(sys.argv[2])
+output_path = Path(sys.argv[3])
 
 total = 0
 errors_404 = 0
@@ -32,21 +41,40 @@ pattern = re.compile(
     r'^(\S+) .*?"[A-Z]+ (\S+) [^"]+" (\d{3}) '
 )
 
-with log_path.open(errors="replace") as log:
+def mask_ip(address):
+    try:
+        ip = ipaddress.ip_address(address)
+
+        if isinstance(ip, ipaddress.IPv4Address):
+            parts = address.split(".")
+            return ".".join(parts[:3]) + ".xxx"
+
+        # Hide the last 80 bits of an IPv6 address.
+        network = ipaddress.ip_network(
+            f"{address}/48",
+            strict=False
+        )
+        return str(network.network_address) + "/48"
+
+    except ValueError:
+        return "Unknown client"
+
+with log_path.open(encoding="utf-8", errors="replace") as log:
     for line in log:
         match = pattern.search(line)
+
         if not match:
             continue
 
         ip, path, status = match.groups()
 
-        # Ignore monitoring page requests.
+        # Ignore monitoring dashboard requests.
         if path.split("?")[0].startswith("/live/"):
             continue
 
         total += 1
         pages[path] += 1
-        ips[ip] += 1
+        ips[mask_ip(ip)] += 1
 
         if status == "404":
             errors_404 += 1
@@ -54,46 +82,80 @@ with log_path.open(errors="replace") as log:
 
 def top_five(counter):
     if not counter:
-        return "<li>No data yet</li>"
+        return '<li class="report-empty">No data yet</li>'
 
-    return "\n".join(
-        f"<li>{html.escape(name)}: {count}</li>"
-        for name, count in counter.most_common(5)
-    )
+    items = []
+
+    for name, count in counter.most_common(5):
+        safe_name = html.escape(str(name), quote=True)
+        items.append(
+            f"<li><span>{safe_name}</span>: "
+            f"{count:,} requests</li>"
+        )
+
+    return "\n".join(items)
 
 updated = datetime.now(timezone.utc).strftime(
     "%Y-%m-%d %H:%M:%S UTC"
 )
 
-content = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="300">
-  <title>Cloude Architects - Traffic Report</title>
-  <style>
-    body {{ font-family: Arial, sans-serif; margin: 30px; }}
-    li {{ margin: 8px 0; }}
-  </style>
-</head>
-<body>
-  <h1>Cloude Architects - Traffic Report</h1>
-  <p><strong>Updated:</strong> {updated}</p>
-  <p><strong>Total Requests:</strong> {total}</p>
-  <p><strong>404 Errors:</strong> {errors_404}</p>
+content = template_path.read_text(encoding="utf-8")
 
-  <h2>Top 5 Requested Pages</h2>
-  <ol>{top_five(pages)}</ol>
+# Plain-text placeholders are HTML-escaped.
+text_values = {
+    "UPDATED": updated,
+    "TOTAL": f"{total:,}",
+    "ERRORS_404": f"{errors_404:,}",
+}
 
-  <h2>Top 5 Visitor IPs</h2>
-  <ol>{top_five(ips)}</ol>
+for key, value in text_values.items():
+    placeholder = "{{" + key + "}}"
 
-  <h2>Top 5 Missing Pages (404)</h2>
-  <ol>{top_five(missing)}</ol>
-</body>
-</html>
-"""
+    if placeholder not in content:
+        raise ValueError(f"Missing placeholder: {placeholder}")
 
-output_path.write_text(content, encoding="utf-8")
+    content = content.replace(
+        placeholder,
+        html.escape(value, quote=True)
+    )
+
+# These fragments are built from escaped log values.
+list_values = {
+    "TOP_PAGES": top_five(pages),
+    "TOP_IPS": top_five(ips),
+    "TOP_MISSING": top_five(missing),
+}
+
+for key, value in list_values.items():
+    placeholder = "{{" + key + "}}"
+
+    if placeholder not in content:
+        raise ValueError(f"Missing placeholder: {placeholder}")
+
+    content = content.replace(placeholder, value)
+
+# Atomically publish the generated HTML.
+output_path.parent.mkdir(parents=True, exist_ok=True)
+temporary_path = None
+
+try:
+    with tempfile.NamedTemporaryFile(
+        mode="w",
+        encoding="utf-8",
+        dir=output_path.parent,
+        prefix=".report-",
+        suffix=".tmp",
+        delete=False,
+    ) as temporary_file:
+        temporary_path = Path(temporary_file.name)
+        temporary_file.write(content)
+
+    temporary_path.chmod(0o644)
+    temporary_path.replace(output_path)
+
+finally:
+    if temporary_path is not None:
+        temporary_path.unlink(missing_ok=True)
+
 print(f"Traffic report generated: {output_path}")
 PY
