@@ -73,9 +73,10 @@ jobs:
         run: |
           set -euo pipefail
           curl --fail --silent --show-error \
+            --location \
             --retry 3 --retry-delay 2 \
             --max-time 15 \
-            http://cloud-architects.duckdns.org/ \
+            https://cloud-architects.duckdns.org/ \
             | grep -F "$GITHUB_SHA"
 
       - name: Notify Slack
